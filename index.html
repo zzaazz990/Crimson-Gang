@@ -10,10 +10,6 @@
          *  نظام العصابات - Crimson RP
          *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
          *  Developed.by Abu7oor
-         *  
-         *  ⚠️ هذا الكود محمي بحقوق النشر.
-         *  يمنع نسخ أو توزيع أو إعادة نشر هذا الكود
-         *  دون إذن كتابي مسبق من المالك.
          * ================================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -24,9 +20,6 @@
             min-height: 100vh;
             position: relative;
         }
-        /* ============================================================
-         *  العلامة المائية - حقوق النشر
-         * ============================================================ */
         body::after {
             content: "© 2024 Crimson RP | Developed.by Abu7oor";
             position: fixed;
@@ -55,9 +48,6 @@
         }
         .container { max-width: 1350px; margin: 0 auto; position: relative; z-index: 1; }
 
-        /* ============================================================
-         *  رأس الصفحة - مع حقوق النشر
-         * ============================================================ */
         .header { text-align: center; padding: 30px 0; border-bottom: 2px solid #1a1a1a; margin-bottom: 30px; }
         .header h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, #f1c40f, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
         .header h1 i { -webkit-text-fill-color: #f1c40f; margin-left: 12px; }
@@ -176,7 +166,6 @@
         .territory-item .name { font-size: 0.8rem; color: #ccc; font-weight: bold; }
         .territory-item .gang { font-size: 0.65rem; color: #777; }
 
-        /* Admin Panel */
         .admin-panel { background: #111; border-radius: 14px; padding: 20px 25px; border: 1px solid #f1c40f; margin-bottom: 25px; }
         .admin-panel h3 { color: #f1c40f; font-size: 1.4rem; margin-bottom: 10px; }
         .admin-panel .admin-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
@@ -187,23 +176,29 @@
         .admin-panel .admin-row button:hover { opacity: 0.85; }
         .admin-panel .admin-row button:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* View Mode Banner */
         .view-mode-banner { background: #1a1a2a; border: 2px solid #3498db; border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .view-mode-banner i { font-size: 1.5rem; color: #3498db; }
         .view-mode-banner .text { color: #aaa; font-size: 0.9rem; }
         .view-mode-banner .text strong { color: #3498db; }
 
-        /* Login Modal */
         .login-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-        .login-modal .box { background: #1a1a1a; padding: 35px; border-radius: 16px; border: 2px solid #f1c40f; width: 340px; text-align: center; }
-        .login-modal .box h2 { color: #f1c40f; margin-bottom: 15px; }
-        .login-modal .box h2 small { display: block; font-size: 0.5rem; color: #555; margin-top: 5px; }
-        .login-modal .box input { width: 100%; padding: 10px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; }
-        .login-modal .box button { width: 100%; padding: 10px; background: #f1c40f; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 8px; }
+        .login-modal .box { background: #1a1a1a; padding: 35px; border-radius: 16px; border: 2px solid #f1c40f; width: 360px; text-align: center; }
+        .login-modal .box h2 { color: #f1c40f; margin-bottom: 5px; }
+        .login-modal .box h2 small { display: block; font-size: 0.6rem; color: #555; margin-top: 3px; }
+        .login-modal .box .sub-title { color: #888; font-size: 0.8rem; margin-bottom: 15px; }
+        .login-modal .box input { width: 100%; padding: 10px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 1rem; }
+        .login-modal .box input:focus { border-color: #f1c40f; outline: none; }
+        .login-modal .box button { width: 100%; padding: 10px; background: #f1c40f; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 8px; font-size: 1rem; transition: 0.2s; }
+        .login-modal .box button:hover { background: #e6b800; transform: scale(1.02); }
         .login-modal .box .error { color: #e74c3c; font-size: 0.8rem; margin-top: 6px; }
-        .login-modal .box .user-info { color: #888; font-size: 0.7rem; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px; }
-        .login-modal .box .copyright-footer { margin-top: 12px; color: #444; font-size: 0.6rem; border-top: 1px solid #1a1a1a; padding-top: 10px; }
+        .login-modal .box .user-info { color: #888; font-size: 0.65rem; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px; line-height: 1.8; }
+        .login-modal .box .user-info .boss { color: #f1c40f; }
+        .login-modal .box .user-info .member { color: #2ecc71; }
+        .login-modal .box .user-info .viewer { color: #3498db; }
+        .login-modal .box .copyright-footer { margin-top: 12px; color: #444; font-size: 0.55rem; border-top: 1px solid #1a1a1a; padding-top: 10px; }
         .login-modal .box .copyright-footer span { color: #8e44ad; }
+        .login-modal .box .show-pass-btn { background: #333; color: #aaa; border: none; padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 0.6rem; margin-top: 5px; }
+        .login-modal .box .show-pass-btn:hover { background: #444; color: #fff; }
 
         @media (max-width: 600px) {
             .header h1 { font-size: 1.8rem; }
@@ -211,6 +206,7 @@
             .gang-grid { grid-template-columns: 1fr; }
             .mission-grid { grid-template-columns: 1fr; }
             .week-section { flex-direction: column; text-align: center; }
+            .login-modal .box { width: 95%; padding: 25px; }
         }
     </style>
 </head>
@@ -218,24 +214,34 @@
 
     <!-- ============================================================
     ｜  LOGIN MODAL
-    ｜  حقوق النشر © 2024 Crimson RP - Developed.by Abu7oor
     ｜ ============================================================ -->
     <div class="login-modal" id="loginModal">
         <div class="box">
             <h2>
-                <i class="fas fa-lock"></i> تسجيل الدخول
+                <i class="fas fa-crown" style="color:#f1c40f;"></i> تسجيل الدخول
                 <small>Crimson RP</small>
             </h2>
-            <input type="text" id="adminUsername" placeholder="اسم المستخدم" />
-            <input type="password" id="adminPassword" placeholder="كلمة المرور" />
-            <button onclick="adminLogin()">دخول</button>
+            <div class="sub-title">نظام إدارة العصابات</div>
+            
+            <input type="text" id="adminUsername" placeholder="👤 اسم المستخدم" />
+            <input type="password" id="adminPassword" placeholder="🔑 كلمة المرور" />
+            
+            <button onclick="adminLogin()">
+                <i class="fas fa-sign-in-alt"></i> دخول
+            </button>
+            
             <div class="error" id="loginError"></div>
+            
+            <button class="show-pass-btn" onclick="showPasswords()">
+                <i class="fas fa-key"></i> عرض كلمات المرور
+            </button>
+            
             <div class="user-info">
-                <div><strong>👑 Crimson Gang:</strong> أ.سـقـراط</div>
-                <div><strong>🔹 حياة:</strong> الاجــرام</div>
-                <div style="font-size:0.6rem;color:#555;margin-top:4px;">الأعضاء يمتلكون صلاحيات التعديل الكاملة</div>
-                <div style="font-size:0.6rem;color:#3498db;margin-top:4px;">👀 وضع المشاهدة: للمستخدمين العاديين</div>
+                <div><span class="boss">👑 المسؤول:</span> BoosMafia</div>
+                <div><span class="member">🔹 الأعضاء:</span> Mafia1, Mafia2, Mafia3</div>
+                <div><span class="viewer">👀 وضع المشاهدة:</span> أي اسم مستخدم + أي كلمة مرور</div>
             </div>
+            
             <div class="copyright-footer">
                 <i class="fas fa-copyright"></i> 2024 Crimson RP | <span>Developed.by Abu7oor</span>
             </div>
@@ -349,27 +355,67 @@
          *  نظام العصابات - Crimson RP
          *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
          *  Developed.by Abu7oor
-         *  
-         *  ⚠️ تحذير: هذا الكود محمي بحقوق النشر.
-         *  يمنع نسخ أو توزيع أو إعادة نشر هذا الكود
-         *  دون إذن كتابي مسبق من المالك.
          * ================================================================ */
 
         // ================================================================
-        //  طبقة الحماية 1: التحقق من النطاق المسموح
+        //  DISCORD WEBHOOK - ضع رابط Webhook الخاص بك هنا
         // ================================================================
-        (function checkDomain() {
-            const allowedDomains = ['localhost', '127.0.0.1', 'crimson-rp.com', 'your-server.com'];
-            const currentDomain = window.location.hostname;
-            if (!allowedDomains.includes(currentDomain) && !currentDomain.includes('github')) {
-                console.warn('⚠️ هذا النظام يعمل فقط على النطاقات المصرح بها!');
-                // يمكن تفعيل هذا في الإنتاج
-                // document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0a0a;color:#e74c3c;font-size:2rem;text-align:center;padding:20px;"><div><i class="fas fa-ban" style="font-size:4rem;display:block;margin-bottom:20px;"></i>🚫 هذا النظام يعمل فقط على النطاقات المصرح بها<br><span style="font-size:1rem;color:#888;">© 2024 Crimson RP</span></div></div>';
-            }
-        })();
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/رقمك/رمزك';
 
         // ================================================================
-        //  طبقة الحماية 2: تحذير في الكونسول
+        //  دالة إرسال إشعار إلى Discord
+        // ================================================================
+        async function sendDiscordNotification(title, description, color = 0xf1c40f, fields = []) {
+            try {
+                const currentUser = document.getElementById('currentUserDisplay')?.textContent || 'غير معروف';
+                
+                const embed = {
+                    title: title,
+                    description: description,
+                    color: color,
+                    fields: fields,
+                    footer: {
+                        text: `Crimson RP | ${new Date().toLocaleString('ar-SA')}`
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                embed.fields.push({
+                    name: '👤 المستخدم',
+                    value: currentUser,
+                    inline: true
+                });
+                
+                const data = {
+                    username: 'نظام العصابات',
+                    avatar_url: 'https://i.imgur.com/4M34hi2.png',
+                    embeds: [embed]
+                };
+                
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.error('❌ فشل إرسال الإشعار:', error);
+            }
+        }
+
+        // ================================================================
+        //  ألوان الإشعارات
+        // ================================================================
+        const COLORS = {
+            SUCCESS: 0x2ecc71,
+            DANGER: 0xe74c3c,
+            WARNING: 0xf39c12,
+            INFO: 0x3498db,
+            GOLD: 0xf1c40f,
+            PURPLE: 0x9b59b6
+        };
+
+        // ================================================================
+        //  طبقة الحماية: تحذير في الكونسول
         // ================================================================
         console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
         console.log('%c  نظام العصابات - Crimson RP', 'color: #f1c40f; font-size: 18px; font-weight: bold;');
@@ -378,55 +424,26 @@
         console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
         console.log('%c⚠️ تحذير: هذا الكود محمي بحقوق النشر', 'color: #e74c3c; font-size: 16px; font-weight: bold;');
         console.log('%cيمنع نسخ أو توزيع أو إعادة نشر هذا الكود دون إذن', 'color: #f39c12; font-size: 14px;');
-        console.log('%cللتواصل: Developed.by Abu7oor', 'color: #3498db; font-size: 12px;');
-        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
 
         // ================================================================
-        //  طبقة الحماية 3: كشف التعديل (Anti-Tamper)
-        // ================================================================
-        (function antiTamper() {
-            // تخزين توقيع الكود
-            const codeSignature = 'CRIMSON_RP_2024_ABU7OOR';
-            // التحقق من وجود التواقيع في الكود
-            const checkElements = document.querySelectorAll('*');
-            let found = false;
-            // التحقق من وجود العلامات المائية في CSS
-            const styles = document.querySelectorAll('style');
-            styles.forEach(style => {
-                if (style.textContent.includes('CRIMSON RP')) found = true;
-            });
-            // إذا لم يتم العثور على العلامات، قد يكون الكود معدلاً
-            if (!found) {
-                console.warn('⚠️ تم اكتشاف تعديل محتمل في الكود!');
-            }
-        })();
-
-        // ================================================================
-        //  USER SYSTEM - كلمات المرور مشفرة
+        //  USER SYSTEM - بيانات الدخول الصحيحة
         // ================================================================
 
-        // كلمات المرور مشفرة باستخدام SHA-256 (هذه نسخ مشفرة)
-        // BoosMafia: 98234123da3 -> تم تشفيرها
-        // Mafia1: dqwerd224f2r -> تم تشفيرها
-        // Mafia2: dw1e1234d1 -> تم تشفيرها
-        // Mafia3: dwq1q4f2fd2 -> تم تشفيرها
-
-        // ملاحظة: هذه كلمات مرور مشفرة بشكل آمن
         const USERS = {
             'BoosMafia': { 
-                passwordHash: '8d5a7f6b3c9e1a2d4f8g7h6j5k4l3m2n1', // مشفر
+                password: '98234123da3', 
                 role: 'boss' 
             },
             'Mafia1': { 
-                passwordHash: '7c6d5e4f3g2h1i9j8k7l6m5n4o3p2q1r', // مشفر
+                password: 'dqwerd224f2r', 
                 role: 'member' 
             },
             'Mafia2': { 
-                passwordHash: '6b5c4d3e2f1g9h8i7j6k5l4m3n2o1p0q', // مشفر
+                password: 'dw1e1234d1', 
                 role: 'member' 
             },
             'Mafia3': { 
-                passwordHash: '5a4b3c2d1e0f9g8h7i6j5k4l3m2n1o0p', // مشفر
+                password: 'dwq1q4f2fd2', 
                 role: 'member' 
             }
         };
@@ -436,17 +453,29 @@
         let isLoggedIn = false;
 
         // ================================================================
-        //  دالة تشفير كلمة المرور
+        //  دالة عرض كلمات المرور
         // ================================================================
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password + 'CRIMSON_RP_SALT_2024');
-            const hash = await crypto.subtle.digest('SHA-256', data);
-            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
+        function showPasswords() {
+            alert(
+                '═══════════════════════════════\n' +
+                '👑  المسؤول (صلاحيات كاملة)\n' +
+                '   BoosMafia: 98234123da3\n' +
+                '═══════════════════════════════\n' +
+                '🔹  الأعضاء (صلاحيات كاملة)\n' +
+                '   Mafia1: dqwerd224f2r\n' +
+                '   Mafia2: dw1e1234d1\n' +
+                '   Mafia3: dwq1q4f2fd2\n' +
+                '═══════════════════════════════\n' +
+                '👀  وضع المشاهدة (مشاهدة فقط)\n' +
+                '   أي اسم مستخدم + أي كلمة مرور\n' +
+                '═══════════════════════════════\n' +
+                '📌 ملاحظة: كلمات المرور حساسة للأحرف\n' +
+                'Crimson RP | Developed.by Abu7oor'
+            );
         }
 
         // ================================================================
-        //  DATA - Persistent via localStorage
+        //  DATA
         // ================================================================
 
         let gangs = [];
@@ -455,7 +484,6 @@
         let currentWeek = 1;
         let weekGang = null;
 
-        // Default data
         const defaultGangs = [
             { id: 0, name: "Faqous", color: "#E74C3C", icon: "fa-crow", leader: "الصقر", territory: "وسط المدينة", bio: "عصابة شرسة تعتمد على السرعة والدهاء. لا تترك أثراً.", rank: "زعيم", type: "conflict", points: 100, weapons: 2, scenariosCompleted: 3, randomFights: 0, reputation: 75 },
             { id: 1, name: "Yakuza", color: "#8E44AD", icon: "fa-dragon", leader: "التنين", territory: "الحي الشرقي", bio: "عصابة منظمة تعتمد على التخطيط والاحترافية. شرفهم فوق كل شيء.", rank: "أوكامي", type: "competitive", points: 80, weapons: 1, scenariosCompleted: 2, randomFights: 0, reputation: 55 }
@@ -539,22 +567,6 @@
             let maxPoints = -1, topGang = null;
             gangs.forEach(g => { if (g.points > maxPoints) { maxPoints = g.points; topGang = g; } });
             return topGang;
-        }
-
-        function punishRandomFight(gangId) {
-            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return false; }
-            const g = getGangById(gangId);
-            if (!g) return false;
-            const penalty = 25;
-            g.points = Math.max(0, g.points - penalty);
-            g.randomFights = (g.randomFights || 0) + 1;
-            g.reputation = clampReputation((g.reputation ?? 50) - 15);
-            saveData();
-            updateStats();
-            renderGangs('all');
-            renderTerritories();
-            alert(`⚠️ تم خصم ${penalty} نقطة من عصابة ${g.name}\nالسبب: فايتة عشوائية\n-15 سمعة\nالحالة: ${getReputationStatus(g.reputation).label}`);
-            return true;
         }
 
         // ================================================================
@@ -650,10 +662,10 @@
         }
 
         // ================================================================
-        //  ACTIONS
+        //  ACTIONS - مع إرسال إشعارات Discord
         // ================================================================
 
-        function startScenario(id) {
+        async function startScenario(id) {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const s = scenarios.find(sc => sc.id === id);
             if (!s) return;
@@ -675,6 +687,18 @@
                     if (loser && loser.weapons > 0) loser.weapons -= 1;
                 }
                 saveData();
+                
+                await sendDiscordNotification(
+                    '🎯 سيناريو جديد',
+                    `تم تنفيذ سيناريو **${s.title}**`,
+                    COLORS.GOLD,
+                    [
+                        { name: '🏆 الفائز', value: winnerName, inline: true },
+                        { name: '⭐ المكافأة', value: `${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}`, inline: true },
+                        { name: '📊 سمعة', value: `+${s.isMain ? 8 : 4}`, inline: true }
+                    ]
+                );
+                
                 alert(`🎯 تم السيناريو!\nالفائز: ${winner.name}\n+${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}\n+${s.isMain ? 8 : 4} سمعة`);
                 updateStats();
                 renderGangs('all');
@@ -682,7 +706,7 @@
             }
         }
 
-        function assignPoints(id) {
+        async function assignPoints(id) {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const g = getGangById(id);
             if (!g) return;
@@ -690,6 +714,16 @@
             if (points !== null && !isNaN(points) && parseInt(points) > 0) {
                 g.points += parseInt(points);
                 saveData();
+                
+                await sendDiscordNotification(
+                    '⭐ إضافة نقاط',
+                    `تم إضافة ${points} نقطة لعصابة **${g.name}**`,
+                    COLORS.SUCCESS,
+                    [
+                        { name: '📊 النقاط الجديدة', value: `${g.points} نقطة`, inline: true }
+                    ]
+                );
+                
                 updateStats();
                 renderGangs('all');
                 renderTerritories();
@@ -697,7 +731,7 @@
             }
         }
 
-        function changeReputation(id) {
+        async function changeReputation(id) {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const g = getGangById(id);
             if (!g) return;
@@ -706,13 +740,53 @@
             const amount = parseInt(value);
             g.reputation = clampReputation((g.reputation ?? 50) + amount);
             saveData();
+            
+            await sendDiscordNotification(
+                '🛡️ تعديل سمعة',
+                `تم تعديل سمعة عصابة **${g.name}**`,
+                COLORS.INFO,
+                [
+                    { name: '📊 التعديل', value: `${amount >= 0 ? '+' : ''}${amount}`, inline: true },
+                    { name: '📊 السمعة الجديدة', value: `${g.reputation}/100`, inline: true },
+                    { name: '📌 الحالة', value: getReputationStatus(g.reputation).label, inline: true }
+                ]
+            );
+            
             updateStats();
             renderGangs('all');
             renderMissions();
             alert(`🛡️ تم تعديل سمعة ${g.name}\nالسمعة الجديدة: ${g.reputation}/100\nالحالة: ${getReputationStatus(g.reputation).label}`);
         }
 
-        function doWeeklyReset() {
+        async function punishRandomFight(gangId) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return false; }
+            const g = getGangById(gangId);
+            if (!g) return false;
+            const penalty = 25;
+            g.points = Math.max(0, g.points - penalty);
+            g.randomFights = (g.randomFights || 0) + 1;
+            g.reputation = clampReputation((g.reputation ?? 50) - 15);
+            saveData();
+            
+            await sendDiscordNotification(
+                '⚖️ عقوبة فايتة عشوائية',
+                `تم خصم نقاط من عصابة **${g.name}**`,
+                COLORS.DANGER,
+                [
+                    { name: '📉 الخصم', value: '-25 نقطة', inline: true },
+                    { name: '📉 السمعة', value: '-15 سمعة', inline: true },
+                    { name: '📊 السمعة الحالية', value: `${g.reputation}/100`, inline: true }
+                ]
+            );
+            
+            updateStats();
+            renderGangs('all');
+            renderTerritories();
+            alert(`⚠️ تم خصم ${penalty} نقطة من عصابة ${g.name}\nالسبب: فايتة عشوائية\n-15 سمعة\nالحالة: ${getReputationStatus(g.reputation).label}`);
+            return true;
+        }
+
+        async function doWeeklyReset() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const top = calculateWeekGang();
             if (top) { weekGang = top; document.getElementById('weekGangName').textContent = top.name; document.getElementById('weekGangName').style.color = top.color; }
@@ -725,6 +799,17 @@
             currentWeek++;
             document.getElementById('weekNumber').textContent = currentWeek;
             saveData();
+            
+            await sendDiscordNotification(
+                '📊 جرد نهاية الأسبوع',
+                `📅 الأسبوع ${currentWeek - 1} - تم الجرد بنجاح`,
+                COLORS.GOLD,
+                [
+                    { name: '🏆 عصابة الأسبوع', value: top ? top.name : 'لا يوجد', inline: true },
+                    { name: '📈 مكافأة', value: '+100 نقطة', inline: true }
+                ]
+            );
+            
             updateStats();
             renderGangs('all');
             renderMissions();
@@ -733,10 +818,10 @@
         }
 
         // ================================================================
-        //  ADMIN FUNCTIONS
+        //  ADMIN FUNCTIONS - مع إشعارات Discord
         // ================================================================
 
-        function addGang() {
+        async function addGang() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const name = document.getElementById('gangNameInput').value.trim();
             const leader = document.getElementById('gangLeaderInput').value.trim();
@@ -745,8 +830,9 @@
             const type = document.getElementById('gangTypeInput').value;
             if (!name) { alert('الرجاء إدخال اسم العصابة'); return; }
             if (getGangByName(name)) { alert('العصابة موجودة مسبقاً'); return; }
-            const colors = ['#E74C3C','#8E44AD','#2ECC71','#3498DB','#F39C12','#1ABC9C','#E67E22','#9B59B6'];
-            const icons = ['fa-crow','fa-dragon','fa-skull','fa-shield-halved','fa-crown','fa-fist-raised','fa-ghost','fa-mask'];
+            
+            const colors = ['#E74C3C','#8E44AD','#2ECC71','#3498DB','#F39C12','#1ABC9C'];
+            const icons = ['fa-crow','fa-dragon','fa-skull','fa-shield-halved','fa-crown','fa-fist-raised'];
             const newGang = {
                 id: gangs.length,
                 name: name,
@@ -766,6 +852,18 @@
             gangs.push(newGang);
             territories.push({ name: territory || 'منطقة جديدة', gang: name, color: newGang.color });
             saveData();
+            
+            await sendDiscordNotification(
+                '🆕 عصابة جديدة',
+                `تم إضافة عصابة **${name}**`,
+                COLORS.SUCCESS,
+                [
+                    { name: '👑 الزعيم', value: leader || 'غير محدد', inline: true },
+                    { name: '📍 المنطقة', value: territory || 'غير محدد', inline: true },
+                    { name: '📌 النوع', value: getTypeName(type), inline: true }
+                ]
+            );
+            
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -777,7 +875,7 @@
             alert(`✅ تم إضافة عصابة ${name}`);
         }
 
-        function editGangFull() {
+        async function editGangFull() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const oldName = document.getElementById('editGangName').value.trim();
             const newName = document.getElementById('editNewName').value.trim();
@@ -789,23 +887,31 @@
             const gang = getGangByName(oldName);
             if (!gang) { alert('العصابة غير موجودة'); return; }
             
+            let changes = [];
             if (newName && newName !== oldName) {
                 if (getGangByName(newName)) { alert('الاسم الجديد مستخدم من قبل'); return; }
+                changes.push(`الاسم: ${oldName} → ${newName}`);
                 gang.name = newName;
                 territories.forEach(t => { if (t.gang === oldName) t.gang = newName; });
                 scenarios.forEach(s => {
                     s.gangs = s.gangs.map(n => n === oldName ? newName : n);
                 });
             }
-            if (newLeader) gang.leader = newLeader;
-            if (newTerritory) {
-                gang.territory = newTerritory;
-                const t = territories.find(t => t.gang === gang.name);
-                if (t) t.name = newTerritory;
-            }
-            if (newBio) gang.bio = newBio;
+            if (newLeader) { changes.push(`الزعيم: ${gang.leader} → ${newLeader}`); gang.leader = newLeader; }
+            if (newTerritory) { changes.push(`المنطقة: ${gang.territory} → ${newTerritory}`); gang.territory = newTerritory; const t = territories.find(t => t.gang === gang.name); if (t) t.name = newTerritory; }
+            if (newBio) { changes.push(`الوصف: تم التحديث`); gang.bio = newBio; }
             
             saveData();
+            
+            await sendDiscordNotification(
+                '✏️ تعديل عصابة',
+                `تم تعديل بيانات عصابة **${gang.name}**`,
+                COLORS.INFO,
+                [
+                    { name: '📝 التغييرات', value: changes.join('\n') || 'تغييرات طفيفة', inline: false }
+                ]
+            );
+            
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -818,7 +924,7 @@
             alert(`✅ تم تحديث بيانات العصابة ${gang.name}`);
         }
 
-        function deleteGang() {
+        async function deleteGang() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const name = document.getElementById('editGangName').value.trim();
             if (!name) { alert('الرجاء إدخال اسم العصابة للحذف'); return; }
@@ -829,6 +935,14 @@
             territories = territories.filter(t => t.gang !== name);
             scenarios.forEach(s => { s.gangs = s.gangs.filter(n => n !== name); });
             saveData();
+            
+            await sendDiscordNotification(
+                '🗑️ حذف عصابة',
+                `تم حذف عصابة **${name}** نهائياً!`,
+                COLORS.DANGER,
+                []
+            );
+            
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -841,7 +955,7 @@
         //  SCENARIO MANAGEMENT
         // ================================================================
 
-        function addScenario() {
+        async function addScenario() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const title = document.getElementById('scenarioTitle').value.trim();
             const desc = document.getElementById('scenarioDesc').value.trim();
@@ -857,7 +971,7 @@
             const gangNames = gangsInput.split(',').map(s => s.trim()).filter(Boolean);
             const validGangs = gangNames.filter(name => getGangByName(name));
             if (validGangs.length < 2) {
-                alert('يجب أن يكون هناك عصابة واحدة على الأقل (ويفضل عصابة)');
+                alert('يجب أن يكون هناك عصابة واحدة على الأقل');
                 return;
             }
             
@@ -876,6 +990,18 @@
             
             scenarios.push(newScenario);
             saveData();
+            
+            await sendDiscordNotification(
+                '📜 سيناريو جديد',
+                `تم إضافة سيناريو **${title}**`,
+                COLORS.PURPLE,
+                [
+                    { name: '📝 الوصف', value: desc, inline: false },
+                    { name: '🎯 العصابات', value: validGangs.join('، '), inline: true },
+                    { name: '⭐ المكافأة', value: `${reward} نقطة`, inline: true }
+                ]
+            );
+            
             renderMissions();
             updateStats();
             
@@ -885,76 +1011,86 @@
             alert(`✅ تم إضافة سيناريو جديد: ${title}`);
         }
 
-        function deleteScenario(id) {
+        async function deleteScenario(id) {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const s = scenarios.find(sc => sc.id === id);
             if (!s) return;
             if (!confirm(`⚠️ هل أنت متأكد من حذف سيناريو "${s.title}"؟`)) return;
             scenarios = scenarios.filter(sc => sc.id !== id);
             saveData();
+            
+            await sendDiscordNotification(
+                '🗑️ حذف سيناريو',
+                `تم حذف سيناريو **${s.title}**`,
+                COLORS.WARNING,
+                []
+            );
+            
             renderMissions();
             updateStats();
             alert(`🗑️ تم حذف سيناريو "${s.title}"`);
         }
 
         // ================================================================
-        //  LOGIN - مع تشفير كلمة المرور
+        //  LOGIN - الدالة الرئيسية
         // ================================================================
 
-        async function adminLogin() {
+        function adminLogin() {
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
             const errorEl = document.getElementById('loginError');
             
-            // التحقق من وجود المستخدم
-            if (!USERS[username]) {
-                // وضع المشاهدة - أي مستخدم غير مسجل
-                if (username && password) {
-                    isLoggedIn = false;
-                    currentUser = 'زائر';
-                    isBoss = false;
+            console.log('👤 محاولة تسجيل دخول:', username);
+            
+            // 1️⃣ التحقق من المستخدم المسجل
+            if (USERS[username]) {
+                if (USERS[username].password === password) {
+                    // ✅ تسجيل دخول ناجح
+                    isLoggedIn = true;
+                    currentUser = username;
+                    isBoss = (USERS[username].role === 'boss');
                     errorEl.textContent = '';
                     document.getElementById('loginModal').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'block';
-                    document.getElementById('currentUserDisplay').textContent = '👀 زائر (مشاهدة فقط)';
-                    document.getElementById('viewModeBanner').style.display = 'flex';
+                    document.getElementById('currentUserDisplay').textContent = username + (isBoss ? ' 👑' : '');
+                    document.getElementById('viewModeBanner').style.display = 'none';
+                    
+                    document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
+                    document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
+                    
                     loadData();
                     renderAll();
-                    document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
-                    document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '0.4');
                     setupResetButton();
+                    
+                    console.log('✅ تسجيل الدخول ناجح! مرحباً', username);
+                    return;
+                } else {
+                    errorEl.textContent = '❌ كلمة المرور غير صحيحة';
+                    console.log('❌ كلمة المرور غير صحيحة للمستخدم:', username);
                     return;
                 }
-                errorEl.textContent = '❌ اسم المستخدم غير موجود';
+            }
+            
+            // 2️⃣ وضع المشاهدة (أي اسم مستخدم وكلمة مرور)
+            if (username && password) {
+                isLoggedIn = false;
+                currentUser = 'زائر';
+                isBoss = false;
+                errorEl.textContent = '';
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('currentUserDisplay').textContent = '👀 زائر (مشاهدة فقط)';
+                document.getElementById('viewModeBanner').style.display = 'flex';
+                loadData();
+                renderAll();
+                document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
+                document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '0.4');
+                setupResetButton();
+                console.log('👀 وضع المشاهدة - مرحباً زائر');
                 return;
             }
             
-            // تشفير كلمة المرور المدخلة للمقارنة
-            const inputHash = await hashPassword(password);
-            const user = USERS[username];
-            
-            if (user.passwordHash !== inputHash) {
-                errorEl.textContent = '❌ كلمة المرور غير صحيحة';
-                return;
-            }
-            
-            // تسجيل الدخول ناجح
-            isLoggedIn = true;
-            currentUser = username;
-            isBoss = (user.role === 'boss');
-            errorEl.textContent = '';
-            document.getElementById('loginModal').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            document.getElementById('currentUserDisplay').textContent = username + (isBoss ? ' 👑' : '');
-            document.getElementById('viewModeBanner').style.display = 'none';
-            
-            // تفعيل لوحة التحكم
-            document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
-            document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
-            
-            loadData();
-            renderAll();
-            setupResetButton();
+            errorEl.textContent = '❌ الرجاء إدخال اسم المستخدم وكلمة المرور';
         }
 
         function setupResetButton() {
@@ -1008,6 +1144,7 @@
         console.log('✅ نظام العصابات - Crimson RP');
         console.log('👑 Developed.by Abu7oor');
         console.log('🔒 جميع الحقوق محفوظة © 2024');
+        console.log('📨 Discord Webhook: ' + (DISCORD_WEBHOOK_URL.includes('رقمك') ? '❌ لم يتم إعداد Webhook' : '✅ تم الإعداد'));
     </script>
 </body>
 </html>
