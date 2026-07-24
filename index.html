@@ -211,6 +211,16 @@
         }
         .logout-btn:hover { background: #c0392b; transform: scale(1.05); }
 
+        /* مؤشر التحميل */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: #f1c40f;
+        }
+        .loading-spinner i { font-size: 1.5rem; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
         @media (max-width: 600px) {
             .header h1 { font-size: 1.8rem; }
             .top-bar { grid-template-columns: repeat(2,1fr); }
@@ -244,8 +254,8 @@
             <div class="error" id="loginError"></div>
             
             <div class="user-info">
-                <div><span class="boss">👑 المسؤول:</span> BoosMafia</div>
-                <div><span class="member">🔹 الأعضاء:</span> Mafia1, Mafia2, Mafia3</div>
+                <div><span class="boss">👑 المسؤول:</span> أ.سـقـراط</div>
+                <div><span class="member">🔹 مرحبابكم:</span> حيــاة الاجـرام</div>
                 <div><span class="viewer">👀 وضع المشاهدة:</span> أي اسم مستخدم + أي كلمة مرور</div>
             </div>
             
@@ -263,6 +273,9 @@
             <h1><i class="fas fa-crown"></i> نظام العصابات</h1>
             <p><i class="fas fa-shield-alt"></i> حوارات · سيناريوهات · نقاط · <span class="highlight">ممنوع الفايتات العشوائية</span></p>
             <p style="color:#888;font-size:0.8rem;margin-top:5px;">مرحباً <span id="currentUserDisplay" style="color:#f1c40f;font-weight:bold;">---</span></p>
+            <div class="loading-spinner" id="loadingSpinner">
+                <i class="fas fa-spinner"></i> جاري حفظ البيانات في السحابة...
+            </div>
             <div class="logout-area">
                 <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
             </div>
@@ -366,6 +379,13 @@
          *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
          *  Developed.by Abu7oor
          * ================================================================ */
+
+        // ================================================================
+        //  JSONBIN - حفظ البيانات في السحابة
+        //  ⚠️ استبدل البيانات التالية بمفاتيحك من JSONBin
+        // ================================================================
+          const JSONBIN_API_KEY = '$2a$10$JVI/ayM3v3ne1lLkwGiyhe5eNu9tpUvLkKGeXcMZ3./x4KxfTlkZ2';
+          const JSONBIN_BIN_ID = '6a62e17ef5f4af5e29b9917a';
 
         // ================================================================
         //  DISCORD WEBHOOK - ضع رابط Webhook الخاص بك هنا
@@ -481,14 +501,12 @@
             
             try {
                 const session = JSON.parse(sessionData);
-                // صلاحية الجلسة: 24 ساعة
                 const hours24 = 24 * 60 * 60 * 1000;
                 if (Date.now() - session.timestamp > hours24) {
                     localStorage.removeItem('gangSession');
                     return false;
                 }
                 
-                // استعادة الجلسة
                 isLoggedIn = true;
                 currentUser = session.username;
                 isBoss = session.isBoss;
@@ -507,10 +525,6 @@
                     document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
                 }
                 
-                loadData();
-                renderAll();
-                setupResetButton();
-                console.log('🔄 تم استعادة الجلسة للمستخدم:', session.username);
                 return true;
             } catch(e) {
                 localStorage.removeItem('gangSession');
@@ -527,6 +541,96 @@
             currentUser = null;
             isBoss = false;
             location.reload();
+        }
+
+        // ================================================================
+        //  JSONBIN - دوال حفظ وتحميل البيانات من السحابة
+        // ================================================================
+
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        // حفظ البيانات في السحابة
+        async function saveToCloud() {
+            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
+                console.warn('⚠️ لم يتم إعداد JSONBin، يتم الحفظ محلياً فقط');
+                return;
+            }
+            
+            try {
+                showLoading(true);
+                const data = {
+                    gangs: gangs,
+                    scenarios: scenarios,
+                    territories: territories,
+                    currentWeek: currentWeek,
+                    weekGang: weekGang
+                };
+                
+                await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(data)
+                });
+                console.log('✅ تم حفظ البيانات في السحابة (JSONBin)');
+            } catch (error) {
+                console.error('❌ فشل حفظ البيانات في السحابة:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // تحميل البيانات من السحابة
+        async function loadFromCloud() {
+            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
+                console.warn('⚠️ لم يتم إعداد JSONBin، يتم التحميل محلياً');
+                return false;
+            }
+            
+            try {
+                showLoading(true);
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    headers: {
+                        'X-Master-Key': JSONBIN_API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    console.warn('⚠️ فشل تحميل البيانات من السحابة (status:', response.status, ')');
+                    return false;
+                }
+                
+                const result = await response.json();
+                const data = result.record;
+                
+                if (data && data.gangs) {
+                    gangs = data.gangs;
+                    scenarios = data.scenarios || defaultScenarios;
+                    territories = data.territories || defaultTerritories;
+                    currentWeek = data.currentWeek || 1;
+                    weekGang = data.weekGang || null;
+                    
+                    gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
+                    
+                    // حفظ نسخة محلية احتياطية
+                    localStorage.setItem('gangSystemData', JSON.stringify({
+                        gangs, scenarios, territories, currentWeek, weekGang
+                    }));
+                    
+                    console.log('✅ تم تحميل البيانات من السحابة (JSONBin)');
+                    return true;
+                }
+                return false;
+            } catch (error) {
+                console.error('❌ فشل تحميل البيانات من السحابة:', error);
+                return false;
+            } finally {
+                showLoading(false);
+            }
         }
 
         // ================================================================
@@ -560,8 +664,12 @@
             { name: "الحي الشرقي", gang: "Yakuza", color: "#8E44AD" }
         ];
 
+        // دالة تحميل البيانات (محلياً أولاً، ثم من السحابة)
         function loadData() {
+            // 1️⃣ حاول التحميل من localStorage
             const saved = localStorage.getItem('gangSystemData');
+            let loadedFromLocal = false;
+            
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -571,21 +679,41 @@
                     currentWeek = parsed.currentWeek || 1;
                     weekGang = parsed.weekGang || null;
                     gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
-                    return;
-                } catch(e) {}
+                    loadedFromLocal = true;
+                    console.log('✅ تم تحميل البيانات من localStorage');
+                } catch(e) {
+                    console.warn('⚠️ فشل تحميل البيانات من localStorage');
+                }
             }
-            gangs = JSON.parse(JSON.stringify(defaultGangs));
-            scenarios = JSON.parse(JSON.stringify(defaultScenarios));
-            territories = JSON.parse(JSON.stringify(defaultTerritories));
-            currentWeek = 1;
-            weekGang = null;
-            saveData();
+            
+            // 2️⃣ إذا لم يكن محلياً، استخدم القيم الافتراضية
+            if (!loadedFromLocal) {
+                gangs = JSON.parse(JSON.stringify(defaultGangs));
+                scenarios = JSON.parse(JSON.stringify(defaultScenarios));
+                territories = JSON.parse(JSON.stringify(defaultTerritories));
+                currentWeek = 1;
+                weekGang = null;
+            }
+            
+            // 3️⃣ جلب أحدث البيانات من السحابة (تحديث)
+            loadFromCloud().then(cloudLoaded => {
+                if (cloudLoaded) {
+                    // تم تحديث البيانات من السحابة، إعادة رسم الواجهة
+                    renderAll();
+                    updateStats();
+                }
+            });
         }
 
+        // دالة حفظ البيانات (محلياً وفي السحابة)
         function saveData() {
+            // حفظ محلياً
             localStorage.setItem('gangSystemData', JSON.stringify({
                 gangs, scenarios, territories, currentWeek, weekGang
             }));
+            
+            // حفظ في السحابة
+            saveToCloud();
         }
 
         // ================================================================
@@ -717,7 +845,7 @@
         }
 
         // ================================================================
-        //  ACTIONS - مع إرسال إشعارات Discord
+        //  ACTIONS - مع إرسال إشعارات Discord وحفظ في السحابة
         // ================================================================
 
         async function startScenario(id) {
@@ -873,7 +1001,7 @@
         }
 
         // ================================================================
-        //  ADMIN FUNCTIONS - مع إشعارات Discord
+        //  ADMIN FUNCTIONS - مع إشعارات Discord وحفظ في السحابة
         // ================================================================
 
         async function addGang() {
@@ -1097,16 +1225,13 @@
             
             console.log('👤 محاولة تسجيل دخول:', username);
             
-            // 1️⃣ التحقق من المستخدم المسجل
             if (USERS[username]) {
                 if (USERS[username].password === password) {
-                    // ✅ تسجيل دخول ناجح
                     isLoggedIn = true;
                     currentUser = username;
                     isBoss = (USERS[username].role === 'boss');
                     errorEl.textContent = '';
                     
-                    // 💾 حفظ الجلسة
                     saveSession(username, isBoss, USERS[username].role);
                     
                     document.getElementById('loginModal').style.display = 'none';
@@ -1130,14 +1255,12 @@
                 }
             }
             
-            // 2️⃣ وضع المشاهدة (أي اسم مستخدم وكلمة مرور)
             if (username && password) {
                 isLoggedIn = false;
                 currentUser = 'زائر';
                 isBoss = false;
                 errorEl.textContent = '';
                 
-                // 💾 حفظ الجلسة كزائر
                 saveSession('زائر', false, 'viewer');
                 
                 document.getElementById('loginModal').style.display = 'none';
@@ -1194,16 +1317,13 @@
         //  INIT - مع استعادة الجلسة
         // ================================================================
 
-        // أولاً: محاولة استعادة الجلسة
         const sessionRestored = restoreSession();
 
         if (!sessionRestored) {
-            // إذا ما فيه جلسة، اعرض شاشة تسجيل الدخول
             document.getElementById('loginModal').style.display = 'flex';
             document.getElementById('mainApp').style.display = 'none';
         }
 
-        // أحداث Enter
         document.getElementById('adminPassword').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') adminLogin();
         });
@@ -1214,6 +1334,7 @@
         console.log('✅ نظام العصابات - Crimson RP');
         console.log('👑 Developed.by Abu7oor');
         console.log('🔒 جميع الحقوق محفوظة © 2024');
+        console.log('☁️ JSONBin: ' + (JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY' ? '❌ لم يتم الإعداد' : '✅ تم الإعداد'));
         console.log('📨 Discord Webhook: ' + (DISCORD_WEBHOOK_URL.includes('رقمك') ? '❌ لم يتم إعداد Webhook' : '✅ تم الإعداد'));
         console.log('💾 الجلسة: ' + (sessionRestored ? '✅ تم استعادتها' : '❌ لا توجد جلسة سابقة'));
     </script>
