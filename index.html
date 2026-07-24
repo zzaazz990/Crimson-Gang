@@ -6,11 +6,6 @@
     <title>نظام العصابات - Crimson RP</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ================================================================
-         *  نظام العصابات - Crimson RP
-         *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
-         *  Developed.by Abu7oor
-         * ================================================================ */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: #0a0a0a;
@@ -29,8 +24,6 @@
             font-size: 10px;
             pointer-events: none;
             z-index: 9999;
-            font-family: 'Tahoma', sans-serif;
-            letter-spacing: 0.5px;
         }
         body::before {
             content: "CRIMSON RP © 2024";
@@ -43,7 +36,6 @@
             pointer-events: none;
             z-index: 9998;
             font-weight: bold;
-            font-family: 'Tahoma', sans-serif;
             letter-spacing: 8px;
         }
         .container { max-width: 1350px; margin: 0 auto; position: relative; z-index: 1; }
@@ -53,13 +45,7 @@
         .header h1 i { -webkit-text-fill-color: #f1c40f; margin-left: 12px; }
         .header p { color: #888; font-size: 1rem; margin-top: 8px; }
         .header .highlight { color: #f1c40f; font-weight: bold; }
-        .header .copyright {
-            margin-top: 10px;
-            color: #555;
-            font-size: 0.7rem;
-            border-top: 1px solid #1a1a1a;
-            padding-top: 12px;
-        }
+        .header .copyright { margin-top: 10px; color: #555; font-size: 0.7rem; border-top: 1px solid #1a1a1a; padding-top: 12px; }
         .header .copyright span { color: #8e44ad; font-weight: bold; }
         .header .logout-area { margin-top: 10px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
@@ -176,6 +162,7 @@
         .admin-panel .admin-row button.danger { background: #e74c3c; color: #fff; }
         .admin-panel .admin-row button:hover { opacity: 0.85; }
         .admin-panel .admin-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .admin-panel .save-btn-area { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
 
         .view-mode-banner { background: #1a1a2a; border: 2px solid #3498db; border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .view-mode-banner i { font-size: 1.5rem; color: #3498db; }
@@ -199,24 +186,13 @@
         .login-modal .box .copyright-footer { margin-top: 12px; color: #444; font-size: 0.55rem; border-top: 1px solid #1a1a1a; padding-top: 10px; }
         .login-modal .box .copyright-footer span { color: #8e44ad; }
 
-        .logout-btn {
-            background: #e74c3c;
-            color: #fff;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
+        .logout-btn { background: #e74c3c; color: #fff; border: none; padding: 6px 18px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
         .logout-btn:hover { background: #c0392b; transform: scale(1.05); }
 
-        .loading-spinner {
-            display: none;
-            text-align: center;
-            padding: 10px;
-            color: #f1c40f;
-        }
+        .save-btn { background: #3498db; color: #fff; border: none; padding: 6px 18px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .save-btn:hover { background: #2980b9; transform: scale(1.05); }
+
+        .loading-spinner { display: none; text-align: center; padding: 10px; color: #f1c40f; }
         .loading-spinner i { font-size: 1.5rem; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
@@ -312,7 +288,6 @@
             <div class="penalty"><i class="fas fa-minus-circle"></i> -25 نقطة · -15 سمعة</div>
         </div>
 
-        <!-- View Mode Banner -->
         <div class="view-mode-banner" id="viewModeBanner" style="display:none;">
             <i class="fas fa-eye"></i>
             <div class="text"><strong>👀 وضع المشاهدة</strong> — أنت تشاهد النظام بدون صلاحيات تعديل. لتعديل البيانات، سجل الدخول بحساب مسؤول أو عضو.</div>
@@ -346,6 +321,10 @@
                 <input type="number" id="scenarioReward" placeholder="المكافأة" value="40" />
                 <select id="scenarioType"><option value="diplomatic">دبلوماسي</option><option value="competitive">تنافسي</option><option value="conflict">صراعي</option></select>
                 <button onclick="addScenario()"><i class="fas fa-plus"></i> إضافة سيناريو</button>
+            </div>
+            <div class="save-btn-area">
+                <button class="save-btn" onclick="manualSave()"><i class="fas fa-save"></i> حفظ البيانات يدوياً</button>
+                <button class="save-btn" onclick="manualLoad()" style="background:#2ecc71;"><i class="fas fa-download"></i> تحديث من السحابة</button>
             </div>
         </div>
 
@@ -391,88 +370,13 @@
         const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/رقمك/رمزك';
 
         // ================================================================
-        //  دالة إرسال إشعار إلى Discord
+        //  USER SYSTEM
         // ================================================================
-        async function sendDiscordNotification(title, description, color = 0xf1c40f, fields = []) {
-            try {
-                const currentUser = document.getElementById('currentUserDisplay')?.textContent || 'غير معروف';
-                
-                const embed = {
-                    title: title,
-                    description: description,
-                    color: color,
-                    fields: fields,
-                    footer: {
-                        text: `Crimson RP | ${new Date().toLocaleString('ar-SA')}`
-                    },
-                    timestamp: new Date().toISOString()
-                };
-                
-                embed.fields.push({
-                    name: '👤 المستخدم',
-                    value: currentUser,
-                    inline: true
-                });
-                
-                const data = {
-                    username: 'نظام العصابات',
-                    avatar_url: 'https://i.imgur.com/4M34hi2.png',
-                    embeds: [embed]
-                };
-                
-                await fetch(DISCORD_WEBHOOK_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-            } catch (error) {
-                console.error('❌ فشل إرسال الإشعار:', error);
-            }
-        }
-
-        // ================================================================
-        //  ألوان الإشعارات
-        // ================================================================
-        const COLORS = {
-            SUCCESS: 0x2ecc71,
-            DANGER: 0xe74c3c,
-            WARNING: 0xf39c12,
-            INFO: 0x3498db,
-            GOLD: 0xf1c40f,
-            PURPLE: 0x9b59b6
-        };
-
-        // ================================================================
-        //  طبقة الحماية: تحذير في الكونسول
-        // ================================================================
-        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
-        console.log('%c  نظام العصابات - Crimson RP', 'color: #f1c40f; font-size: 18px; font-weight: bold;');
-        console.log('%c  حقوق النشر © 2024 Crimson RP', 'color: #8e44ad; font-size: 14px;');
-        console.log('%c  Developed.by Abu7oor', 'color: #2ecc71; font-size: 14px;');
-        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
-        console.log('%c⚠️ تحذير: هذا الكود محمي بحقوق النشر', 'color: #e74c3c; font-size: 16px; font-weight: bold;');
-
-        // ================================================================
-        //  USER SYSTEM - بيانات الدخول الصحيحة
-        // ================================================================
-
         const USERS = {
-            'BoosMafia': { 
-                password: '98234123da3', 
-                role: 'boss' 
-            },
-            'Mafia1': { 
-                password: 'dqwerd224f2r', 
-                role: 'member' 
-            },
-            'Mafia2': { 
-                password: 'dw1e1234d1', 
-                role: 'member' 
-            },
-            'Mafia3': { 
-                password: 'dwq1q4f2fd2', 
-                role: 'member' 
-            }
+            'BoosMafia': { password: '98234123da3', role: 'boss' },
+            'Mafia1': { password: 'dqwerd224f2r', role: 'member' },
+            'Mafia2': { password: 'dw1e1234d1', role: 'member' },
+            'Mafia3': { password: 'dwq1q4f2fd2', role: 'member' }
         };
 
         let currentUser = null;
@@ -480,39 +384,28 @@
         let isLoggedIn = false;
 
         // ================================================================
-        //  حفظ واستعادة الجلسة (Session)
+        //  SESSION
         // ================================================================
-
         function saveSession(username, isBoss, role) {
-            const sessionData = {
-                username: username,
-                isBoss: isBoss,
-                role: role,
-                timestamp: Date.now()
-            };
+            const sessionData = { username, isBoss, role, timestamp: Date.now() };
             localStorage.setItem('gangSession', JSON.stringify(sessionData));
         }
 
         function restoreSession() {
             const sessionData = localStorage.getItem('gangSession');
             if (!sessionData) return false;
-            
             try {
                 const session = JSON.parse(sessionData);
-                const hours24 = 24 * 60 * 60 * 1000;
-                if (Date.now() - session.timestamp > hours24) {
+                if (Date.now() - session.timestamp > 24 * 60 * 60 * 1000) {
                     localStorage.removeItem('gangSession');
                     return false;
                 }
-                
                 isLoggedIn = true;
                 currentUser = session.username;
                 isBoss = session.isBoss;
-                
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('currentUserDisplay').textContent = session.username + (session.isBoss ? ' 👑' : '');
-                
                 if (session.username === 'زائر') {
                     document.getElementById('viewModeBanner').style.display = 'flex';
                     document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
@@ -522,12 +415,8 @@
                     document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
                     document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
                 }
-                
                 return true;
-            } catch(e) {
-                localStorage.removeItem('gangSession');
-                return false;
-            }
+            } catch(e) { localStorage.removeItem('gangSession'); return false; }
         }
 
         function logout() {
@@ -539,207 +428,8 @@
         }
 
         // ================================================================
-        //  JSONBIN - دوال حفظ وتحميل البيانات (نسخة محسنة)
-        // ================================================================
-
-        function showLoading(show) {
-            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
-        }
-
-        // حفظ البيانات في السحابة - مع دمج البيانات
-        async function saveToCloud() {
-            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
-                console.warn('⚠️ لم يتم إعداد JSONBin، يتم الحفظ محلياً فقط');
-                return;
-            }
-            
-            try {
-                showLoading(true);
-                
-                // 1️⃣ جلب البيانات الحالية من السحابة أولاً (للدمج)
-                let existingData = { gangs: [], scenarios: [], territories: [] };
-                try {
-                    const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-                        headers: { 'X-Master-Key': JSONBIN_API_KEY }
-                    });
-                    if (response.ok) {
-                        const result = await response.json();
-                        if (result.record) {
-                            existingData = result.record;
-                            console.log('📥 تم جلب البيانات الحالية من السحابة للدمج');
-                        }
-                    }
-                } catch(e) {
-                    console.log('ℹ️ لا توجد بيانات سابقة في السحابة، سيتم إنشاء جديدة');
-                }
-                
-                // 2️⃣ دمج البيانات (الحفاظ على السيناريوهات القديمة)
-                const existingGangNames = existingData.gangs ? existingData.gangs.map(g => g.name) : [];
-                const newGangs = gangs.filter(g => !existingGangNames.includes(g.name));
-                const mergedGangs = [...(existingData.gangs || []), ...newGangs];
-                
-                const existingScenarioTitles = existingData.scenarios ? existingData.scenarios.map(s => s.title) : [];
-                const newScenarios = scenarios.filter(s => !existingScenarioTitles.includes(s.title));
-                const mergedScenarios = [...(existingData.scenarios || []), ...newScenarios];
-                
-                const existingTerritoryNames = existingData.territories ? existingData.territories.map(t => t.name) : [];
-                const newTerritories = territories.filter(t => !existingTerritoryNames.includes(t.name));
-                const mergedTerritories = [...(existingData.territories || []), ...newTerritories];
-                
-                // 3️⃣ تحضير البيانات للحفظ
-                const data = {
-                    gangs: mergedGangs,
-                    scenarios: mergedScenarios,
-                    territories: mergedTerritories,
-                    currentWeek: currentWeek || 1,
-                    weekGang: weekGang || null
-                };
-                
-                console.log('📤 جاري حفظ البيانات في السحابة...');
-                console.log('📊 عدد العصابات:', data.gangs.length);
-                console.log('📊 عدد السيناريوهات:', data.scenarios.length);
-                
-                // 4️⃣ حفظ في السحابة
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log('✅ تم حفظ البيانات في السحابة (JSONBin)', result);
-                
-                // 5️⃣ تحديث البيانات المحلية بالبيانات المدمجة
-                gangs = mergedGangs;
-                scenarios = mergedScenarios;
-                territories = mergedTerritories;
-                
-                localStorage.setItem('gangSystemData', JSON.stringify({
-                    gangs, scenarios, territories, currentWeek, weekGang
-                }));
-                
-            } catch (error) {
-                console.error('❌ فشل حفظ البيانات في السحابة:', error);
-                alert('⚠️ فشل حفظ البيانات في السحابة. تم الحفظ محلياً فقط.');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // تحميل البيانات من السحابة
-        async function loadFromCloud() {
-            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
-                console.warn('⚠️ لم يتم إعداد JSONBin، يتم التحميل محلياً');
-                return false;
-            }
-            
-            try {
-                showLoading(true);
-                console.log('📥 جاري تحميل البيانات من السحابة...');
-                
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
-                    headers: {
-                        'X-Master-Key': JSONBIN_API_KEY
-                    }
-                });
-                
-                if (!response.ok) {
-                    console.warn('⚠️ فشل تحميل البيانات من السحابة (status:', response.status, ')');
-                    return false;
-                }
-                
-                const result = await response.json();
-                const data = result.record;
-                
-                console.log('📥 البيانات المستلمة من السحابة:', data);
-                
-                if (data && data.gangs && data.gangs.length > 0) {
-                    gangs = data.gangs.map(g => ({
-                        ...g,
-                        points: g.points || 0,
-                        weapons: g.weapons || 0,
-                        scenariosCompleted: g.scenariosCompleted || 0,
-                        randomFights: g.randomFights || 0,
-                        reputation: g.reputation || 50
-                    }));
-                    
-                    scenarios = data.scenarios || defaultScenarios;
-                    territories = data.territories || defaultTerritories;
-                    currentWeek = data.currentWeek || 1;
-                    weekGang = data.weekGang || null;
-                    
-                    gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
-                    
-                    localStorage.setItem('gangSystemData', JSON.stringify({
-                        gangs, scenarios, territories, currentWeek, weekGang
-                    }));
-                    
-                    console.log('✅ تم تحميل البيانات من السحابة (JSONBin)');
-                    console.log('📊 عدد العصابات:', gangs.length);
-                    console.log('📊 عدد السيناريوهات:', scenarios.length);
-                    
-                    return true;
-                } else {
-                    console.warn('⚠️ لا توجد بيانات في السحابة، سيتم استخدام البيانات المحلية');
-                    return false;
-                }
-            } catch (error) {
-                console.error('❌ فشل تحميل البيانات من السحابة:', error);
-                return false;
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // استعادة السيناريوهات المفقودة
-        function restoreMissingScenarios() {
-            const defaultScenariosList = [
-                { id: 0, title: "صفقة السلاح", desc: "Yakuza تعرض بيع أسلحة لـ Faqous. المفاوضات تحدد السعر والكمية.", gangs: ["Yakuza","Faqous"], type: "diplomatic", reward: 40, weaponReward: false, isMain: false, minReputation: 0, icon: "fa-coins" },
-                { id: 1, title: "نزاع المنطقة", desc: "Faqous و Yakuza يتنازعان على منطقة وسط المدينة. حوار يحدد من ينسحب.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 60, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-balance-scale" },
-                { id: 2, title: "غارة السلاح 💥", desc: "Faqous تخزن أسلحة في وسط المدينة. Yakuza تريد سرقتها. حوار قبل الهجوم.", gangs: ["Faqous","Yakuza"], type: "conflict", reward: 80, weaponReward: true, isMain: true, minReputation: 60, icon: "fa-gun" },
-                { id: 3, title: "عملية إنقاذ", desc: "عضو من Faqous مختطف. Yakuza تطلب فدية. حوار لتحديد المصير.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 45, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-handcuffs" },
-                { id: 4, title: "صفقة كبرى 💰", desc: "Faqous و Yakuza يتفقان على صفقة مخدرات ضخمة في الميناء.", gangs: ["Faqous","Yakuza"], type: "diplomatic", reward: 65, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-coins" },
-                { id: 5, title: "تهريب البضائع", desc: "اتفاق بين Faqous و Yakuza لتهريب بضائع ثمينة عبر المطار. تقاسم الأرباح.", gangs: ["Faqous","Yakuza"], type: "diplomatic", reward: 50, weaponReward: false, isMain: false, minReputation: 0, icon: "fa-truck" },
-                { id: 6, title: "سرقة البنك 🏦", desc: "Faqous تخطط لسرقة بنك وسط المدينة. Yakuza تريد المشاركة أو إفشال العملية. حوار لتحديد الاتفاق.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 55, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-university" },
-                { id: 7, title: "حماية الزعيم", desc: "زعيم Yakuza مهدد بالاغتيال. Faqous تعرض الحماية مقابل تنازلات. حوار لتحديد الصفقة.", gangs: ["Yakuza","Faqous"], type: "conflict", reward: 75, weaponReward: true, isMain: true, minReputation: 60, icon: "fa-shield-alt" }
-            ];
-            
-            const existingTitles = scenarios.map(s => s.title);
-            let addedCount = 0;
-            
-            defaultScenariosList.forEach(defaultS => {
-                if (!existingTitles.includes(defaultS.title)) {
-                    const newId = scenarios.length;
-                    scenarios.push({
-                        ...defaultS,
-                        id: newId
-                    });
-                    addedCount++;
-                    console.log(`✅ تم استعادة السيناريو: ${defaultS.title}`);
-                }
-            });
-            
-            if (addedCount > 0) {
-                console.log(`✅ تم استعادة ${addedCount} سيناريو مفقود`);
-                saveData();
-                renderMissions();
-                updateStats();
-            }
-            
-            return addedCount;
-        }
-
-        // ================================================================
         //  DATA
         // ================================================================
-
         let gangs = [];
         let scenarios = [];
         let territories = [];
@@ -767,10 +457,104 @@
             { name: "الحي الشرقي", gang: "Yakuza", color: "#8E44AD" }
         ];
 
+        // ================================================================
+        //  JSONBIN FUNCTIONS
+        // ================================================================
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        async function saveToCloud() {
+            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
+                console.warn('⚠️ لم يتم إعداد JSONBin');
+                return;
+            }
+            try {
+                showLoading(true);
+                const data = {
+                    gangs: gangs.map(g => ({
+                        id: g.id, name: g.name, color: g.color, icon: g.icon || 'fa-skull',
+                        leader: g.leader, territory: g.territory, bio: g.bio, rank: g.rank || 'عضو',
+                        type: g.type || 'competitive', points: g.points || 0, weapons: g.weapons || 0,
+                        scenariosCompleted: g.scenariosCompleted || 0, randomFights: g.randomFights || 0,
+                        reputation: g.reputation || 50
+                    })),
+                    scenarios: scenarios.map(s => ({
+                        id: s.id, title: s.title, desc: s.desc, gangs: s.gangs || [],
+                        type: s.type || 'diplomatic', reward: s.reward || 0,
+                        weaponReward: s.weaponReward || false, isMain: s.isMain || false,
+                        minReputation: s.minReputation || 0, icon: s.icon || 'fa-scroll'
+                    })),
+                    territories: territories.map(t => ({ name: t.name, gang: t.gang, color: t.color })),
+                    currentWeek: currentWeek || 1,
+                    weekGang: weekGang || null,
+                    lastUpdated: new Date().toISOString()
+                };
+
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_API_KEY },
+                    body: JSON.stringify(data)
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                console.log('✅ تم حفظ البيانات في السحابة');
+                localStorage.setItem('gangSystemData_Backup', JSON.stringify(data));
+            } catch (error) {
+                console.error('❌ فشل حفظ البيانات في السحابة:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        async function loadFromCloud() {
+            if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'YOUR_JSONBIN_API_KEY') {
+                console.warn('⚠️ لم يتم إعداد JSONBin');
+                return false;
+            }
+            try {
+                showLoading(true);
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`, {
+                    headers: { 'X-Master-Key': JSONBIN_API_KEY }
+                });
+                if (!response.ok) return false;
+                const result = await response.json();
+                const data = result.record;
+                if (!data || !data.gangs) return false;
+
+                gangs = data.gangs.map(g => ({ ...g, points: g.points || 0, weapons: g.weapons || 0, scenariosCompleted: g.scenariosCompleted || 0, randomFights: g.randomFights || 0, reputation: g.reputation || 50 }));
+                scenarios = data.scenarios || defaultScenarios;
+                territories = data.territories || defaultTerritories;
+                currentWeek = data.currentWeek || 1;
+                weekGang = data.weekGang || null;
+                gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
+
+                localStorage.setItem('gangSystemData', JSON.stringify({ gangs, scenarios, territories, currentWeek, weekGang }));
+                localStorage.setItem('gangSystemData_Backup', JSON.stringify({ gangs, scenarios, territories, currentWeek, weekGang }));
+                console.log('✅ تم تحميل البيانات من السحابة');
+                return true;
+            } catch (error) {
+                console.error('❌ فشل تحميل البيانات:', error);
+                return false;
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function restoreMissingScenarios() {
+            const existingTitles = scenarios.map(s => s.title);
+            let added = 0;
+            defaultScenarios.forEach(ds => {
+                if (!existingTitles.includes(ds.title)) {
+                    scenarios.push({ ...ds, id: scenarios.length });
+                    added++;
+                }
+            });
+            if (added > 0) { console.log(`✅ تم استعادة ${added} سيناريو`); saveData(); }
+        }
+
         function loadData() {
             const saved = localStorage.getItem('gangSystemData');
-            let loadedFromLocal = false;
-            
+            let loaded = false;
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -781,53 +565,76 @@
                         currentWeek = parsed.currentWeek || 1;
                         weekGang = parsed.weekGang || null;
                         gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
-                        loadedFromLocal = true;
+                        loaded = true;
                         console.log('✅ تم تحميل البيانات من localStorage');
-                        console.log('📊 عدد العصابات:', gangs.length);
-                        console.log('📊 عدد السيناريوهات:', scenarios.length);
                     }
-                } catch(e) {
-                    console.warn('⚠️ فشل تحميل البيانات من localStorage');
+                } catch(e) {}
+            }
+            if (!loaded) {
+                const backup = localStorage.getItem('gangSystemData_Backup');
+                if (backup) {
+                    try {
+                        const parsed = JSON.parse(backup);
+                        if (parsed.gangs && parsed.gangs.length > 0) {
+                            gangs = parsed.gangs;
+                            scenarios = parsed.scenarios || defaultScenarios;
+                            territories = parsed.territories || defaultTerritories;
+                            currentWeek = parsed.currentWeek || 1;
+                            weekGang = parsed.weekGang || null;
+                            gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
+                            loaded = true;
+                            console.log('✅ تم تحميل البيانات من النسخة الاحتياطية');
+                        }
+                    } catch(e) {}
                 }
             }
-            
-            if (!loadedFromLocal) {
+            if (!loaded) {
                 gangs = JSON.parse(JSON.stringify(defaultGangs));
                 scenarios = JSON.parse(JSON.stringify(defaultScenarios));
                 territories = JSON.parse(JSON.stringify(defaultTerritories));
                 currentWeek = 1;
                 weekGang = null;
                 console.log('📋 تم استخدام البيانات الافتراضية');
+                saveData();
             }
-            
-            // استعادة السيناريوهات المفقودة
             restoreMissingScenarios();
-            
-            // جلب أحدث البيانات من السحابة
-            loadFromCloud().then(cloudLoaded => {
-                if (cloudLoaded) {
-                    renderAll();
-                    updateStats();
-                    console.log('🔄 تم تحديث الواجهة من السحابة');
-                } else {
-                    renderAll();
-                    updateStats();
-                    setTimeout(() => saveToCloud(), 2000);
-                }
+            loadFromCloud().then(cloud => {
+                if (cloud) { renderAll(); updateStats(); }
+                else { renderAll(); updateStats(); setTimeout(saveToCloud, 3000); }
             });
         }
 
         function saveData() {
-            localStorage.setItem('gangSystemData', JSON.stringify({
-                gangs, scenarios, territories, currentWeek, weekGang
-            }));
-            saveToCloud();
+            try {
+                localStorage.setItem('gangSystemData', JSON.stringify({ gangs, scenarios, territories, currentWeek, weekGang }));
+                localStorage.setItem('gangSystemData_Backup', JSON.stringify({ gangs, scenarios, territories, currentWeek, weekGang }));
+                console.log('✅ تم حفظ البيانات محلياً');
+            } catch(e) { console.error('❌ فشل الحفظ المحلي:', e); }
+            setTimeout(saveToCloud, 500);
+        }
+
+        // ================================================================
+        //  MANUAL SAVE / LOAD
+        // ================================================================
+        function manualSave() {
+            saveData();
+            alert('✅ تم حفظ البيانات محلياً وفي السحابة');
+        }
+
+        async function manualLoad() {
+            const result = await loadFromCloud();
+            if (result) {
+                renderAll();
+                updateStats();
+                alert('✅ تم تحديث البيانات من السحابة');
+            } else {
+                alert('❌ فشل تحميل البيانات من السحابة');
+            }
         }
 
         // ================================================================
         //  HELPERS
         // ================================================================
-
         function getGangByName(name) { return gangs.find(g => g.name === name); }
         function getGangById(id) { return gangs.find(g => g.id === id); }
         function getTypeName(type) { const names = { diplomatic:'دبلوماسي', competitive:'تنافسي', conflict:'صراعي' }; return names[type] || type; }
@@ -863,7 +670,6 @@
         // ================================================================
         //  RENDER
         // ================================================================
-
         function renderGangs(filter = 'all') {
             const grid = document.getElementById('gangGrid');
             grid.innerHTML = '';
@@ -955,6 +761,24 @@
         // ================================================================
         //  ACTIONS
         // ================================================================
+        async function sendDiscordNotification(title, description, color = 0xf1c40f, fields = []) {
+            try {
+                const currentUser = document.getElementById('currentUserDisplay')?.textContent || 'غير معروف';
+                const embed = {
+                    title, description, color,
+                    fields: [...fields, { name: '👤 المستخدم', value: currentUser, inline: true }],
+                    footer: { text: `Crimson RP | ${new Date().toLocaleString('ar-SA')}` },
+                    timestamp: new Date().toISOString()
+                };
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: 'نظام العصابات', avatar_url: 'https://i.imgur.com/4M34hi2.png', embeds: [embed] })
+                });
+            } catch (error) { console.error('❌ فشل إرسال الإشعار:', error); }
+        }
+
+        const COLORS = { SUCCESS: 0x2ecc71, DANGER: 0xe74c3c, WARNING: 0xf39c12, INFO: 0x3498db, GOLD: 0xf1c40f, PURPLE: 0x9b59b6 };
 
         async function startScenario(id) {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
@@ -962,7 +786,7 @@
             if (!s) return;
             const blockedGangs = getScenarioBlockedGangs(s);
             if (blockedGangs.length > 0) {
-                alert(`⛔ لا يمكن بدء السيناريو الرئيسي\nالعصابات الممنوعة: ${blockedGangs.map(g => `${g.name} - السمعة ${clampReputation(g.reputation)} (${getReputationStatus(g.reputation).label})`).join('، ')}\nالمطلوب: ${s.minReputation || 60} سمعة على الأقل`);
+                alert(`⛔ لا يمكن بدء السيناريو الرئيسي\nالعصابات الممنوعة: ${blockedGangs.map(g => `${g.name} - السمعة ${clampReputation(g.reputation)}`).join('، ')}\nالمطلوب: ${s.minReputation || 60} سمعة`);
                 return;
             }
             const winnerName = s.gangs[Math.floor(Math.random() * s.gangs.length)];
@@ -978,18 +802,10 @@
                     if (loser && loser.weapons > 0) loser.weapons -= 1;
                 }
                 saveData();
-                
-                await sendDiscordNotification(
-                    '🎯 سيناريو جديد',
-                    `تم تنفيذ سيناريو **${s.title}**`,
-                    COLORS.GOLD,
-                    [
-                        { name: '🏆 الفائز', value: winnerName, inline: true },
-                        { name: '⭐ المكافأة', value: `${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}`, inline: true },
-                        { name: '📊 سمعة', value: `+${s.isMain ? 8 : 4}`, inline: true }
-                    ]
-                );
-                
+                await sendDiscordNotification('🎯 سيناريو جديد', `تم تنفيذ سيناريو **${s.title}**`, COLORS.GOLD, [
+                    { name: '🏆 الفائز', value: winnerName, inline: true },
+                    { name: '⭐ المكافأة', value: `${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}`, inline: true }
+                ]);
                 alert(`🎯 تم السيناريو!\nالفائز: ${winner.name}\n+${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}\n+${s.isMain ? 8 : 4} سمعة`);
                 updateStats();
                 renderGangs('all');
@@ -1005,16 +821,9 @@
             if (points !== null && !isNaN(points) && parseInt(points) > 0) {
                 g.points += parseInt(points);
                 saveData();
-                
-                await sendDiscordNotification(
-                    '⭐ إضافة نقاط',
-                    `تم إضافة ${points} نقطة لعصابة **${g.name}**`,
-                    COLORS.SUCCESS,
-                    [
-                        { name: '📊 النقاط الجديدة', value: `${g.points} نقطة`, inline: true }
-                    ]
-                );
-                
+                await sendDiscordNotification('⭐ إضافة نقاط', `تم إضافة ${points} نقطة لعصابة **${g.name}**`, COLORS.SUCCESS, [
+                    { name: '📊 النقاط الجديدة', value: `${g.points} نقطة`, inline: true }
+                ]);
                 updateStats();
                 renderGangs('all');
                 renderTerritories();
@@ -1031,18 +840,10 @@
             const amount = parseInt(value);
             g.reputation = clampReputation((g.reputation ?? 50) + amount);
             saveData();
-            
-            await sendDiscordNotification(
-                '🛡️ تعديل سمعة',
-                `تم تعديل سمعة عصابة **${g.name}**`,
-                COLORS.INFO,
-                [
-                    { name: '📊 التعديل', value: `${amount >= 0 ? '+' : ''}${amount}`, inline: true },
-                    { name: '📊 السمعة الجديدة', value: `${g.reputation}/100`, inline: true },
-                    { name: '📌 الحالة', value: getReputationStatus(g.reputation).label, inline: true }
-                ]
-            );
-            
+            await sendDiscordNotification('🛡️ تعديل سمعة', `تم تعديل سمعة عصابة **${g.name}**`, COLORS.INFO, [
+                { name: '📊 التعديل', value: `${amount >= 0 ? '+' : ''}${amount}`, inline: true },
+                { name: '📊 السمعة الجديدة', value: `${g.reputation}/100`, inline: true }
+            ]);
             updateStats();
             renderGangs('all');
             renderMissions();
@@ -1053,27 +854,18 @@
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return false; }
             const g = getGangById(gangId);
             if (!g) return false;
-            const penalty = 25;
-            g.points = Math.max(0, g.points - penalty);
+            g.points = Math.max(0, g.points - 25);
             g.randomFights = (g.randomFights || 0) + 1;
             g.reputation = clampReputation((g.reputation ?? 50) - 15);
             saveData();
-            
-            await sendDiscordNotification(
-                '⚖️ عقوبة فايتة عشوائية',
-                `تم خصم نقاط من عصابة **${g.name}**`,
-                COLORS.DANGER,
-                [
-                    { name: '📉 الخصم', value: '-25 نقطة', inline: true },
-                    { name: '📉 السمعة', value: '-15 سمعة', inline: true },
-                    { name: '📊 السمعة الحالية', value: `${g.reputation}/100`, inline: true }
-                ]
-            );
-            
+            await sendDiscordNotification('⚖️ عقوبة فايتة عشوائية', `تم خصم نقاط من عصابة **${g.name}**`, COLORS.DANGER, [
+                { name: '📉 الخصم', value: '-25 نقطة', inline: true },
+                { name: '📉 السمعة', value: '-15 سمعة', inline: true }
+            ]);
             updateStats();
             renderGangs('all');
             renderTerritories();
-            alert(`⚠️ تم خصم ${penalty} نقطة من عصابة ${g.name}\nالسبب: فايتة عشوائية\n-15 سمعة\nالحالة: ${getReputationStatus(g.reputation).label}`);
+            alert(`⚠️ تم خصم 25 نقطة من عصابة ${g.name}\nالسبب: فايتة عشوائية\n-15 سمعة\nالحالة: ${getReputationStatus(g.reputation).label}`);
             return true;
         }
 
@@ -1083,24 +875,16 @@
             if (top) { weekGang = top; document.getElementById('weekGangName').textContent = top.name; document.getElementById('weekGangName').style.color = top.color; }
             gangs.forEach(g => {
                 if (weekGang && g.id === weekGang.id) g.points += 100;
-                g.totalPoints = (g.totalPoints || 0) + g.points;
                 if ((g.randomFights || 0) === 0) g.reputation = clampReputation((g.reputation ?? 50) + 10);
                 g.points = 0; g.weapons = 0; g.scenariosCompleted = 0; g.randomFights = 0;
             });
             currentWeek++;
             document.getElementById('weekNumber').textContent = currentWeek;
             saveData();
-            
-            await sendDiscordNotification(
-                '📊 جرد نهاية الأسبوع',
-                `📅 الأسبوع ${currentWeek - 1} - تم الجرد بنجاح`,
-                COLORS.GOLD,
-                [
-                    { name: '🏆 عصابة الأسبوع', value: top ? top.name : 'لا يوجد', inline: true },
-                    { name: '📈 مكافأة', value: '+100 نقطة', inline: true }
-                ]
-            );
-            
+            await sendDiscordNotification('📊 جرد نهاية الأسبوع', `📅 الأسبوع ${currentWeek - 1} - تم الجرد بنجاح`, COLORS.GOLD, [
+                { name: '🏆 عصابة الأسبوع', value: top ? top.name : 'لا يوجد', inline: true },
+                { name: '📈 مكافأة', value: '+100 نقطة', inline: true }
+            ]);
             updateStats();
             renderGangs('all');
             renderMissions();
@@ -1111,7 +895,6 @@
         // ================================================================
         //  ADMIN FUNCTIONS
         // ================================================================
-
         async function addGang() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const name = document.getElementById('gangNameInput').value.trim();
@@ -1121,40 +904,22 @@
             const type = document.getElementById('gangTypeInput').value;
             if (!name) { alert('الرجاء إدخال اسم العصابة'); return; }
             if (getGangByName(name)) { alert('العصابة موجودة مسبقاً'); return; }
-            
             const colors = ['#E74C3C','#8E44AD','#2ECC71','#3498DB','#F39C12','#1ABC9C'];
             const icons = ['fa-crow','fa-dragon','fa-skull','fa-shield-halved','fa-crown','fa-fist-raised'];
             const newGang = {
-                id: gangs.length,
-                name: name,
-                color: colors[gangs.length % colors.length],
-                icon: icons[gangs.length % icons.length],
-                leader: leader || 'غير محدد',
-                territory: territory || 'منطقة جديدة',
-                bio: bio,
-                rank: 'عضو',
-                type: type,
-                points: 50,
-                weapons: 0,
-                scenariosCompleted: 0,
-                randomFights: 0,
-                reputation: 50
+                id: gangs.length, name, color: colors[gangs.length % colors.length],
+                icon: icons[gangs.length % icons.length], leader: leader || 'غير محدد',
+                territory: territory || 'منطقة جديدة', bio, rank: 'عضو', type,
+                points: 50, weapons: 0, scenariosCompleted: 0, randomFights: 0, reputation: 50
             };
             gangs.push(newGang);
             territories.push({ name: territory || 'منطقة جديدة', gang: name, color: newGang.color });
             saveData();
-            
-            await sendDiscordNotification(
-                '🆕 عصابة جديدة',
-                `تم إضافة عصابة **${name}**`,
-                COLORS.SUCCESS,
-                [
-                    { name: '👑 الزعيم', value: leader || 'غير محدد', inline: true },
-                    { name: '📍 المنطقة', value: territory || 'غير محدد', inline: true },
-                    { name: '📌 النوع', value: getTypeName(type), inline: true }
-                ]
-            );
-            
+            await sendDiscordNotification('🆕 عصابة جديدة', `تم إضافة عصابة **${name}**`, COLORS.SUCCESS, [
+                { name: '👑 الزعيم', value: leader || 'غير محدد', inline: true },
+                { name: '📍 المنطقة', value: territory || 'غير محدد', inline: true },
+                { name: '📌 النوع', value: getTypeName(type), inline: true }
+            ]);
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -1173,36 +938,24 @@
             const newLeader = document.getElementById('editNewLeader').value.trim();
             const newTerritory = document.getElementById('editNewTerritory').value.trim();
             const newBio = document.getElementById('editNewBio').value.trim();
-            
             if (!oldName) { alert('الرجاء إدخال اسم العصابة الحالية'); return; }
             const gang = getGangByName(oldName);
             if (!gang) { alert('العصابة غير موجودة'); return; }
-            
             let changes = [];
             if (newName && newName !== oldName) {
                 if (getGangByName(newName)) { alert('الاسم الجديد مستخدم من قبل'); return; }
                 changes.push(`الاسم: ${oldName} → ${newName}`);
                 gang.name = newName;
                 territories.forEach(t => { if (t.gang === oldName) t.gang = newName; });
-                scenarios.forEach(s => {
-                    s.gangs = s.gangs.map(n => n === oldName ? newName : n);
-                });
+                scenarios.forEach(s => { s.gangs = s.gangs.map(n => n === oldName ? newName : n); });
             }
             if (newLeader) { changes.push(`الزعيم: ${gang.leader} → ${newLeader}`); gang.leader = newLeader; }
             if (newTerritory) { changes.push(`المنطقة: ${gang.territory} → ${newTerritory}`); gang.territory = newTerritory; const t = territories.find(t => t.gang === gang.name); if (t) t.name = newTerritory; }
             if (newBio) { changes.push(`الوصف: تم التحديث`); gang.bio = newBio; }
-            
             saveData();
-            
-            await sendDiscordNotification(
-                '✏️ تعديل عصابة',
-                `تم تعديل بيانات عصابة **${gang.name}**`,
-                COLORS.INFO,
-                [
-                    { name: '📝 التغييرات', value: changes.join('\n') || 'تغييرات طفيفة', inline: false }
-                ]
-            );
-            
+            await sendDiscordNotification('✏️ تعديل عصابة', `تم تعديل بيانات عصابة **${gang.name}**`, COLORS.INFO, [
+                { name: '📝 التغييرات', value: changes.join('\n') || 'تغييرات طفيفة', inline: false }
+            ]);
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -1226,14 +979,7 @@
             territories = territories.filter(t => t.gang !== name);
             scenarios.forEach(s => { s.gangs = s.gangs.filter(n => n !== name); });
             saveData();
-            
-            await sendDiscordNotification(
-                '🗑️ حذف عصابة',
-                `تم حذف عصابة **${name}** نهائياً!`,
-                COLORS.DANGER,
-                []
-            );
-            
+            await sendDiscordNotification('🗑️ حذف عصابة', `تم حذف عصابة **${name}** نهائياً!`, COLORS.DANGER, []);
             updateStats();
             renderGangs('all');
             renderTerritories();
@@ -1242,10 +988,6 @@
             alert(`🗑️ تم حذف عصابة ${name}`);
         }
 
-        // ================================================================
-        //  SCENARIO MANAGEMENT
-        // ================================================================
-
         async function addScenario() {
             if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
             const title = document.getElementById('scenarioTitle').value.trim();
@@ -1253,49 +995,22 @@
             const gangsInput = document.getElementById('scenarioGangs').value.trim();
             const reward = parseInt(document.getElementById('scenarioReward').value) || 40;
             const type = document.getElementById('scenarioType').value;
-            
-            if (!title || !desc || !gangsInput) {
-                alert('الرجاء ملء جميع الحقول (العنوان، الوصف، العصابات)');
-                return;
-            }
-            
-            const gangNames = gangsInput.split(',').map(s => s.trim()).filter(Boolean);
-            const validGangs = gangNames.filter(name => getGangByName(name));
-            if (validGangs.length < 2) {
-                alert('يجب أن يكون هناك عصابة واحدة على الأقل');
-                return;
-            }
-            
-            const newScenario = {
-                id: scenarios.length,
-                title: title,
-                desc: desc,
-                gangs: validGangs,
-                type: type,
-                reward: reward,
-                weaponReward: false,
-                isMain: validGangs.length >= 2,
-                minReputation: validGangs.length >= 2 ? 60 : 0,
-                icon: 'fa-scroll'
-            };
-            
-            scenarios.push(newScenario);
+            if (!title || !desc || !gangsInput) { alert('الرجاء ملء جميع الحقول'); return; }
+            const validGangs = gangsInput.split(',').map(s => s.trim()).filter(Boolean).filter(name => getGangByName(name));
+            if (validGangs.length < 2) { alert('يجب أن يكون هناك عصابة واحدة على الأقل'); return; }
+            scenarios.push({
+                id: scenarios.length, title, desc, gangs: validGangs, type,
+                reward, weaponReward: false, isMain: validGangs.length >= 2,
+                minReputation: validGangs.length >= 2 ? 60 : 0, icon: 'fa-scroll'
+            });
             saveData();
-            
-            await sendDiscordNotification(
-                '📜 سيناريو جديد',
-                `تم إضافة سيناريو **${title}**`,
-                COLORS.PURPLE,
-                [
-                    { name: '📝 الوصف', value: desc, inline: false },
-                    { name: '🎯 العصابات', value: validGangs.join('، '), inline: true },
-                    { name: '⭐ المكافأة', value: `${reward} نقطة`, inline: true }
-                ]
-            );
-            
+            await sendDiscordNotification('📜 سيناريو جديد', `تم إضافة سيناريو **${title}**`, COLORS.PURPLE, [
+                { name: '📝 الوصف', value: desc, inline: false },
+                { name: '🎯 العصابات', value: validGangs.join('، '), inline: true },
+                { name: '⭐ المكافأة', value: `${reward} نقطة`, inline: true }
+            ]);
             renderMissions();
             updateStats();
-            
             document.getElementById('scenarioTitle').value = '';
             document.getElementById('scenarioDesc').value = '';
             document.getElementById('scenarioGangs').value = '';
@@ -1309,14 +1024,7 @@
             if (!confirm(`⚠️ هل أنت متأكد من حذف سيناريو "${s.title}"؟`)) return;
             scenarios = scenarios.filter(sc => sc.id !== id);
             saveData();
-            
-            await sendDiscordNotification(
-                '🗑️ حذف سيناريو',
-                `تم حذف سيناريو **${s.title}**`,
-                COLORS.WARNING,
-                []
-            );
-            
+            await sendDiscordNotification('🗑️ حذف سيناريو', `تم حذف سيناريو **${s.title}**`, COLORS.WARNING, []);
             renderMissions();
             updateStats();
             alert(`🗑️ تم حذف سيناريو "${s.title}"`);
@@ -1325,52 +1033,34 @@
         // ================================================================
         //  LOGIN
         // ================================================================
-
         function adminLogin() {
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
             const errorEl = document.getElementById('loginError');
-            
-            console.log('👤 محاولة تسجيل دخول:', username);
-            
             if (USERS[username]) {
                 if (USERS[username].password === password) {
-                    isLoggedIn = true;
-                    currentUser = username;
-                    isBoss = (USERS[username].role === 'boss');
+                    isLoggedIn = true; currentUser = username; isBoss = (USERS[username].role === 'boss');
                     errorEl.textContent = '';
-                    
                     saveSession(username, isBoss, USERS[username].role);
-                    
                     document.getElementById('loginModal').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'block';
                     document.getElementById('currentUserDisplay').textContent = username + (isBoss ? ' 👑' : '');
                     document.getElementById('viewModeBanner').style.display = 'none';
-                    
                     document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
                     document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
-                    
                     loadData();
                     renderAll();
                     setupResetButton();
-                    
-                    console.log('✅ تسجيل الدخول ناجح! مرحباً', username);
                     return;
                 } else {
                     errorEl.textContent = '❌ كلمة المرور غير صحيحة';
-                    console.log('❌ كلمة المرور غير صحيحة للمستخدم:', username);
                     return;
                 }
             }
-            
             if (username && password) {
-                isLoggedIn = false;
-                currentUser = 'زائر';
-                isBoss = false;
+                isLoggedIn = false; currentUser = 'زائر'; isBoss = false;
                 errorEl.textContent = '';
-                
                 saveSession('زائر', false, 'viewer');
-                
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('currentUserDisplay').textContent = '👀 زائر (مشاهدة فقط)';
@@ -1380,10 +1070,8 @@
                 document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
                 document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '0.4');
                 setupResetButton();
-                console.log('👀 وضع المشاهدة - مرحباً زائر');
                 return;
             }
-            
             errorEl.textContent = '❌ الرجاء إدخال اسم المستخدم وكلمة المرور';
         }
 
@@ -1412,7 +1100,6 @@
         // ================================================================
         //  FILTER BUTTONS
         // ================================================================
-
         document.querySelectorAll('.filters button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
@@ -1424,9 +1111,7 @@
         // ================================================================
         //  INIT
         // ================================================================
-
         const sessionRestored = restoreSession();
-
         if (!sessionRestored) {
             document.getElementById('loginModal').style.display = 'flex';
             document.getElementById('mainApp').style.display = 'none';
@@ -1443,7 +1128,6 @@
         console.log('👑 Developed.by Abu7oor');
         console.log('🔒 جميع الحقوق محفوظة © 2024');
         console.log('☁️ JSONBin: ✅ تم الإعداد');
-        console.log('📨 Discord Webhook: ' + (DISCORD_WEBHOOK_URL.includes('رقمك') ? '❌ لم يتم إعداد Webhook' : '✅ تم الإعداد'));
         console.log('💾 الجلسة: ' + (sessionRestored ? '✅ تم استعادتها' : '❌ لا توجد جلسة سابقة'));
     </script>
 </body>
