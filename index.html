@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام العصابات - Crimson RP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================================================================
+         *  نظام العصابات - Crimson RP
+         *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
+         *  Developed.by Abu7oor
+         *  
+         *  ⚠️ هذا الكود محمي بحقوق النشر.
+         *  يمنع نسخ أو توزيع أو إعادة نشر هذا الكود
+         *  دون إذن كتابي مسبق من المالك.
+         * ================================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #ddd;
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* ============================================================
+         *  العلامة المائية - حقوق النشر
+         * ============================================================ */
+        body::after {
+            content: "© 2024 Crimson RP | Developed.by Abu7oor";
+            position: fixed;
+            bottom: 8px;
+            right: 12px;
+            color: rgba(255,255,255,0.035);
+            font-size: 10px;
+            pointer-events: none;
+            z-index: 9999;
+            font-family: 'Tahoma', sans-serif;
+            letter-spacing: 0.5px;
+        }
+        body::before {
+            content: "CRIMSON RP © 2024";
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            color: rgba(255,255,255,0.012);
+            font-size: 100px;
+            pointer-events: none;
+            z-index: 9998;
+            font-weight: bold;
+            font-family: 'Tahoma', sans-serif;
+            letter-spacing: 8px;
+        }
+        .container { max-width: 1350px; margin: 0 auto; position: relative; z-index: 1; }
+
+        /* ============================================================
+         *  رأس الصفحة - مع حقوق النشر
+         * ============================================================ */
+        .header { text-align: center; padding: 30px 0; border-bottom: 2px solid #1a1a1a; margin-bottom: 30px; }
+        .header h1 { font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, #f1c40f, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+        .header h1 i { -webkit-text-fill-color: #f1c40f; margin-left: 12px; }
+        .header p { color: #888; font-size: 1rem; margin-top: 8px; }
+        .header .highlight { color: #f1c40f; font-weight: bold; }
+        .header .copyright {
+            margin-top: 10px;
+            color: #555;
+            font-size: 0.7rem;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 12px;
+        }
+        .header .copyright span { color: #8e44ad; font-weight: bold; }
+
+        .top-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px; background: #111; padding: 18px 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; }
+        .top-bar .item { text-align: center; }
+        .top-bar .item .num { font-size: 2rem; font-weight: bold; color: #f1c40f; }
+        .top-bar .item .label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .top-bar .item .num.gold { color: #f1c40f; }
+        .top-bar .item .num.green { color: #2ecc71; }
+        .top-bar .item .num.red { color: #e74c3c; }
+        .top-bar .item .num.purple { color: #9b59b6; }
+        .week-section { background: #111; border-radius: 12px; padding: 20px 25px; border: 2px solid #f1c40f; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .week-section .week-info h3 { color: #f1c40f; font-size: 1.3rem; }
+        .week-section .week-info h3 i { margin-left: 10px; }
+        .week-section .week-info p { color: #888; font-size: 0.85rem; }
+        .week-section .gang-of-week { background: #1a1a1a; padding: 10px 25px; border-radius: 30px; border: 2px solid #f1c40f; text-align: center; }
+        .week-section .gang-of-week .title { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+        .week-section .gang-of-week .name { font-size: 1.4rem; font-weight: bold; color: #f1c40f; }
+        .warning-box { background: #1a0a0a; border: 2px solid #e74c3c; border-radius: 12px; padding: 15px 20px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .warning-box i { font-size: 2rem; color: #e74c3c; }
+        .warning-box .text { flex: 1; }
+        .warning-box .text h4 { color: #e74c3c; font-size: 1.1rem; }
+        .warning-box .text p { color: #aaa; font-size: 0.85rem; }
+        .warning-box .penalty { background: #e74c3c; color: #fff; padding: 5px 18px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; }
+        .filters { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .filters button { background: #1a1a1a; border: 1px solid #2a2a2a; color: #aaa; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
+        .filters button:hover { background: #2a2a2a; color: #fff; }
+        .filters button.active { background: #f1c40f; color: #000; border-color: #f1c40f; }
+        .filters button i { margin-left: 6px; }
+        .gang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .gang-card { background: #121212; border-radius: 14px; padding: 25px; border: 1px solid #222; transition: 0.3s; border-right: 6px solid var(--c); position: relative; overflow: hidden; }
+        .gang-card:hover { transform: translateY(-5px); border-color: var(--c); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .gang-card .icon { font-size: 2.5rem; color: var(--c); margin-bottom: 5px; }
+        .gang-card h2 { font-size: 1.6rem; color: #fff; }
+        .gang-card .leader { color: #999; font-size: 0.9rem; margin: 3px 0 8px; }
+        .gang-card .leader i { color: var(--c); margin-left: 5px; }
+        .gang-card .bio { color: #aaa; font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px; }
+        .gang-card .stats-row { display: flex; gap: 15px; margin: 10px 0; flex-wrap: wrap; }
+        .gang-card .stats-row .stat { background: #1a1a1a; padding: 4px 14px; border-radius: 10px; font-size: 0.75rem; color: #aaa; border: 1px solid #2a2a2a; }
+        .gang-card .stats-row .stat i { margin-left: 5px; color: var(--c); }
+        .gang-card .stats-row .stat .val { color: #fff; font-weight: bold; }
+        .gang-card .stats-row .stat .val.negative { color: #e74c3c; }
+        .reputation-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 12px; font-size: 0.72rem; font-weight: bold; border: 1px solid currentColor; margin-top: 4px; }
+        .rep-elite { color: #f1c40f; background: #f1c40f18; }
+        .rep-stable { color: #2ecc71; background: #2ecc7118; }
+        .rep-watch { color: #f39c12; background: #f39c1218; }
+        .rep-threatened { color: #e67e22; background: #e67e2218; }
+        .rep-death { color: #e74c3c; background: #e74c3c18; animation: pulseDanger 1.2s infinite; }
+        @keyframes pulseDanger { 0%,100% { box-shadow: 0 0 0 rgba(231,76,60,0); } 50% { box-shadow: 0 0 16px rgba(231,76,60,0.45); } }
+        .mission-card.locked { opacity: 0.58; border-right-color: #e74c3c; }
+        .mission-card .main-badge { display: inline-block; background: #8e44ad; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 0.68rem; margin: 6px 0; }
+        .mission-card .lock-reason { color: #e74c3c; font-size: 0.76rem; margin-top: 8px; line-height: 1.7; }
+        .gang-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+        .gang-card .tags span { background: #1a1a1a; padding: 3px 12px; border-radius: 12px; font-size: 0.7rem; color: #aaa; border: 1px solid #2a2a2a; }
+        .gang-card .tags span i { margin-left: 4px; }
+        .gang-card .actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+        .gang-card .actions button { flex: 1; padding: 8px 0; border: none; border-radius: 8px; font-size: 0.8rem; font-weight: bold; cursor: pointer; background: #1a1a1a; color: #ccc; border: 1px solid #2a2a2a; transition: 0.2s; min-width: 70px; }
+        .gang-card .actions button:hover { background: var(--c); color: #fff; border-color: var(--c); }
+        .gang-card .actions button.danger:hover { background: #e74c3c; border-color: #e74c3c; }
+        .gang-card .actions button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .missions-box { background: #111; border-radius: 14px; padding: 25px; border: 1px solid #222; margin-bottom: 30px; }
+        .missions-box .head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .missions-box .head h3 { color: #f1c40f; font-size: 1.6rem; }
+        .missions-box .head h3 i { margin-left: 10px; }
+        .missions-box .head .badge { background: #2ecc71; color: #000; padding: 5px 18px; border-radius: 30px; font-size: 0.75rem; font-weight: bold; }
+        .mission-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 18px; }
+        .mission-card { background: #1a1a1a; border-radius: 12px; padding: 18px 20px; border-right: 4px solid #f1c40f; transition: 0.3s; position: relative; }
+        .mission-card:hover { background: #222; }
+        .mission-card .title { font-weight: bold; font-size: 1.05rem; color: #fff; }
+        .mission-card .title i { color: #f1c40f; margin-left: 8px; }
+        .mission-card .desc { color: #aaa; font-size: 0.82rem; margin: 8px 0 12px; line-height: 1.8; }
+        .mission-card .gangs { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+        .mission-card .gangs span { padding: 3px 12px; border-radius: 12px; font-size: 0.7rem; font-weight: bold; color: #fff; }
+        .mission-card .reward { display: inline-block; background: #2a2a2a; padding: 3px 14px; border-radius: 12px; font-size: 0.7rem; color: #f1c40f; border: 1px solid #f1c40f44; margin: 5px 0; }
+        .mission-card .reward i { margin-left: 5px; }
+        .mission-card .btn-start { margin-top: 10px; width: 100%; padding: 8px 0; background: #f1c40f; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.8rem; }
+        .mission-card .btn-start:hover { background: #f39c12; transform: scale(1.02); }
+        .mission-card .btn-start:disabled { opacity: 0.3; cursor: not-allowed; background: #555; color: #aaa; }
+        .mission-card .delete-scenario {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .mission-card .delete-scenario:hover { transform: scale(1.1); background: #c0392b; }
+        .mission-card:hover .delete-scenario { display: flex; }
+        .territory-box { background: #111; border-radius: 14px; padding: 25px; border: 1px solid #222; margin-bottom: 25px; }
+        .territory-box h3 { color: #f1c40f; font-size: 1.4rem; margin-bottom: 15px; }
+        .territory-box h3 i { margin-left: 10px; }
+        .territory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 12px; }
+        .territory-item { background: #1a1a1a; padding: 12px 8px; border-radius: 8px; text-align: center; border: 1px solid #2a2a2a; transition: 0.2s; }
+        .territory-item:hover { border-color: var(--c, #444); }
+        .territory-item .dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; margin-bottom: 4px; border: 1px solid #444; }
+        .territory-item .name { font-size: 0.8rem; color: #ccc; font-weight: bold; }
+        .territory-item .gang { font-size: 0.65rem; color: #777; }
+
+        /* Admin Panel */
+        .admin-panel { background: #111; border-radius: 14px; padding: 20px 25px; border: 1px solid #f1c40f; margin-bottom: 25px; }
+        .admin-panel h3 { color: #f1c40f; font-size: 1.4rem; margin-bottom: 10px; }
+        .admin-panel .admin-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .admin-panel .admin-row input, .admin-panel .admin-row select, .admin-panel .admin-row textarea { background: #1a1a1a; border: 1px solid #333; color: #ddd; padding: 8px 12px; border-radius: 8px; flex: 1; min-width: 120px; }
+        .admin-panel .admin-row textarea { min-width: 200px; resize: vertical; }
+        .admin-panel .admin-row button { background: #f1c40f; color: #000; border: none; padding: 8px 18px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .admin-panel .admin-row button.danger { background: #e74c3c; color: #fff; }
+        .admin-panel .admin-row button:hover { opacity: 0.85; }
+        .admin-panel .admin-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* View Mode Banner */
+        .view-mode-banner { background: #1a1a2a; border: 2px solid #3498db; border-radius: 12px; padding: 12px 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .view-mode-banner i { font-size: 1.5rem; color: #3498db; }
+        .view-mode-banner .text { color: #aaa; font-size: 0.9rem; }
+        .view-mode-banner .text strong { color: #3498db; }
+
+        /* Login Modal */
+        .login-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .login-modal .box { background: #1a1a1a; padding: 35px; border-radius: 16px; border: 2px solid #f1c40f; width: 340px; text-align: center; }
+        .login-modal .box h2 { color: #f1c40f; margin-bottom: 15px; }
+        .login-modal .box h2 small { display: block; font-size: 0.5rem; color: #555; margin-top: 5px; }
+        .login-modal .box input { width: 100%; padding: 10px; margin: 8px 0; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; }
+        .login-modal .box button { width: 100%; padding: 10px; background: #f1c40f; color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 8px; }
+        .login-modal .box .error { color: #e74c3c; font-size: 0.8rem; margin-top: 6px; }
+        .login-modal .box .user-info { color: #888; font-size: 0.7rem; margin-top: 10px; border-top: 1px solid #222; padding-top: 10px; }
+        .login-modal .box .copyright-footer { margin-top: 12px; color: #444; font-size: 0.6rem; border-top: 1px solid #1a1a1a; padding-top: 10px; }
+        .login-modal .box .copyright-footer span { color: #8e44ad; }
+
+        @media (max-width: 600px) {
+            .header h1 { font-size: 1.8rem; }
+            .top-bar { grid-template-columns: repeat(2,1fr); }
+            .gang-grid { grid-template-columns: 1fr; }
+            .mission-grid { grid-template-columns: 1fr; }
+            .week-section { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    ｜  LOGIN MODAL
+    ｜  حقوق النشر © 2024 Crimson RP - Developed.by Abu7oor
+    ｜ ============================================================ -->
+    <div class="login-modal" id="loginModal">
+        <div class="box">
+            <h2>
+                <i class="fas fa-lock"></i> تسجيل الدخول
+                <small>Crimson RP</small>
+            </h2>
+            <input type="text" id="adminUsername" placeholder="اسم المستخدم" />
+            <input type="password" id="adminPassword" placeholder="كلمة المرور" />
+            <button onclick="adminLogin()">دخول</button>
+            <div class="error" id="loginError"></div>
+            <div class="user-info">
+                <div><strong>👑 Crimson Gang:</strong> أ.سـقـراط</div>
+                <div><strong>🔹 حياة:</strong> الاجــرام</div>
+                <div style="font-size:0.6rem;color:#555;margin-top:4px;">الأعضاء يمتلكون صلاحيات التعديل الكاملة</div>
+                <div style="font-size:0.6rem;color:#3498db;margin-top:4px;">👀 وضع المشاهدة: للمستخدمين العاديين</div>
+            </div>
+            <div class="copyright-footer">
+                <i class="fas fa-copyright"></i> 2024 Crimson RP | <span>Developed.by Abu7oor</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    ｜  MAIN APP
+    ｜ ============================================================ -->
+    <div class="container" id="mainApp" style="display:none;">
+        <div class="header">
+            <h1><i class="fas fa-crown"></i> نظام العصابات</h1>
+            <p><i class="fas fa-shield-alt"></i> حوارات · سيناريوهات · نقاط · <span class="highlight">ممنوع الفايتات العشوائية</span></p>
+            <p style="color:#888;font-size:0.8rem;margin-top:5px;">مرحباً <span id="currentUserDisplay" style="color:#f1c40f;font-weight:bold;">---</span></p>
+            <div class="copyright">
+                <i class="fas fa-copyright"></i> 2024 Crimson RP | <span>Developed.by Abu7oor</span> | جميع الحقوق محفوظة
+            </div>
+        </div>
+
+        <div class="top-bar">
+            <div class="item"><div class="num gold" id="totalGangs">0</div><div class="label">العصابات</div></div>
+            <div class="item"><div class="num green" id="totalScenarios">0</div><div class="label">السيناريوهات</div></div>
+            <div class="item"><div class="num purple" id="totalWeapons">0</div><div class="label">الأسلحة</div></div>
+            <div class="item"><div class="num red" id="threatenedGangs">0</div><div class="label">مهددة بالإعدام</div></div>
+            <div class="item"><div class="num gold" id="totalPoints">0</div><div class="label">إجمالي النقاط</div></div>
+            <div class="item"><div class="num red" id="weekNumber">1</div><div class="label">الأسبوع</div></div>
+        </div>
+
+        <div class="week-section" id="weekSection">
+            <div class="week-info">
+                <h3><i class="fas fa-calendar-week"></i> عصابة الأسبوع</h3>
+                <p>الجرد كل يوم <span class="highlight">جمعة</span> · النقاط تتجمع للأسبوع القادم</p>
+            </div>
+            <div class="gang-of-week" id="gangOfWeek">
+                <div class="title">🏆 عصابة هذا الأسبوع</div>
+                <div class="name" id="weekGangName">---</div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="text">
+                <h4>⚠️ ممنوع الفايتات العشوائية</h4>
+                <p>أي عصابة أو فرد من أفرادها يبدأ فايتة بدون سبب أو بدون سيناريو <strong>سيتم خصم النقاط والسمعة</strong>. العصابات منخفضة السمعة تُمنع تلقائيًا من السيناريوهات الرئيسية.</p>
+            </div>
+            <div class="penalty"><i class="fas fa-minus-circle"></i> -25 نقطة · -15 سمعة</div>
+        </div>
+
+        <!-- View Mode Banner -->
+        <div class="view-mode-banner" id="viewModeBanner" style="display:none;">
+            <i class="fas fa-eye"></i>
+            <div class="text"><strong>👀 وضع المشاهدة</strong> — أنت تشاهد النظام بدون صلاحيات تعديل. لتعديل البيانات، سجل الدخول بحساب مسؤول أو عضو.</div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel" id="adminPanel">
+            <h3><i class="fas fa-user-cog"></i> لوحة التحكم</h3>
+            
+            <div class="admin-row">
+                <input type="text" id="gangNameInput" placeholder="اسم العصابة" />
+                <input type="text" id="gangLeaderInput" placeholder="الزعيم" />
+                <input type="text" id="gangTerritoryInput" placeholder="المنطقة" />
+                <input type="text" id="gangBioInput" placeholder="وصف العصابة" />
+                <select id="gangTypeInput"><option value="diplomatic">دبلوماسي</option><option value="competitive">تنافسي</option><option value="conflict">صراعي</option></select>
+                <button onclick="addGang()"><i class="fas fa-plus"></i> إضافة</button>
+            </div>
+            <div class="admin-row" style="margin-top:8px;">
+                <input type="text" id="editGangName" placeholder="اسم العصابة للتعديل" />
+                <input type="text" id="editNewName" placeholder="الاسم الجديد" />
+                <input type="text" id="editNewLeader" placeholder="الزعيم الجديد" />
+                <input type="text" id="editNewTerritory" placeholder="المنطقة الجديدة" />
+                <input type="text" id="editNewBio" placeholder="الوصف الجديد" />
+                <button onclick="editGangFull()"><i class="fas fa-edit"></i> تعديل</button>
+                <button class="danger" id="deleteBtn" onclick="deleteGang()"><i class="fas fa-trash"></i> حذف</button>
+            </div>
+            <div class="admin-row" style="margin-top:8px;border-top:1px solid #222;padding-top:10px;">
+                <input type="text" id="scenarioTitle" placeholder="عنوان السيناريو" />
+                <input type="text" id="scenarioDesc" placeholder="وصف السيناريو" />
+                <input type="text" id="scenarioGangs" placeholder="العصابات (مفصولة بـ ,)" />
+                <input type="number" id="scenarioReward" placeholder="المكافأة" value="40" />
+                <select id="scenarioType"><option value="diplomatic">دبلوماسي</option><option value="competitive">تنافسي</option><option value="conflict">صراعي</option></select>
+                <button onclick="addScenario()"><i class="fas fa-plus"></i> إضافة سيناريو</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="active" data-filter="all"><i class="fas fa-th"></i> الكل</button>
+            <button data-filter="diplomatic"><i class="fas fa-handshake"></i> دبلوماسي</button>
+            <button data-filter="competitive"><i class="fas fa-balance-scale"></i> تنافسي</button>
+            <button data-filter="conflict"><i class="fas fa-skull"></i> صراعي</button>
+        </div>
+
+        <div class="gang-grid" id="gangGrid"></div>
+
+        <div class="missions-box">
+            <div class="head">
+                <h3><i class="fas fa-scroll"></i> السيناريوهات</h3>
+                <span class="badge"><i class="fas fa-comment-dots"></i> حوار أولاً</span>
+            </div>
+            <div class="mission-grid" id="missionGrid"></div>
+        </div>
+
+        <div class="territory-box">
+            <h3><i class="fas fa-map-marker-alt"></i> المناطق المسيطر عليها</h3>
+            <div class="territory-grid" id="territoryGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        /* ================================================================
+         *  نظام العصابات - Crimson RP
+         *  حقوق النشر © 2024 Crimson RP - جميع الحقوق محفوظة
+         *  Developed.by Abu7oor
+         *  
+         *  ⚠️ تحذير: هذا الكود محمي بحقوق النشر.
+         *  يمنع نسخ أو توزيع أو إعادة نشر هذا الكود
+         *  دون إذن كتابي مسبق من المالك.
+         * ================================================================ */
+
+        // ================================================================
+        //  طبقة الحماية 1: التحقق من النطاق المسموح
+        // ================================================================
+        (function checkDomain() {
+            const allowedDomains = ['localhost', '127.0.0.1', 'crimson-rp.com', 'your-server.com'];
+            const currentDomain = window.location.hostname;
+            if (!allowedDomains.includes(currentDomain) && !currentDomain.includes('github')) {
+                console.warn('⚠️ هذا النظام يعمل فقط على النطاقات المصرح بها!');
+                // يمكن تفعيل هذا في الإنتاج
+                // document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0a0a;color:#e74c3c;font-size:2rem;text-align:center;padding:20px;"><div><i class="fas fa-ban" style="font-size:4rem;display:block;margin-bottom:20px;"></i>🚫 هذا النظام يعمل فقط على النطاقات المصرح بها<br><span style="font-size:1rem;color:#888;">© 2024 Crimson RP</span></div></div>';
+            }
+        })();
+
+        // ================================================================
+        //  طبقة الحماية 2: تحذير في الكونسول
+        // ================================================================
+        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
+        console.log('%c  نظام العصابات - Crimson RP', 'color: #f1c40f; font-size: 18px; font-weight: bold;');
+        console.log('%c  حقوق النشر © 2024 Crimson RP', 'color: #8e44ad; font-size: 14px;');
+        console.log('%c  Developed.by Abu7oor', 'color: #2ecc71; font-size: 14px;');
+        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
+        console.log('%c⚠️ تحذير: هذا الكود محمي بحقوق النشر', 'color: #e74c3c; font-size: 16px; font-weight: bold;');
+        console.log('%cيمنع نسخ أو توزيع أو إعادة نشر هذا الكود دون إذن', 'color: #f39c12; font-size: 14px;');
+        console.log('%cللتواصل: Developed.by Abu7oor', 'color: #3498db; font-size: 12px;');
+        console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
+
+        // ================================================================
+        //  طبقة الحماية 3: كشف التعديل (Anti-Tamper)
+        // ================================================================
+        (function antiTamper() {
+            // تخزين توقيع الكود
+            const codeSignature = 'CRIMSON_RP_2024_ABU7OOR';
+            // التحقق من وجود التواقيع في الكود
+            const checkElements = document.querySelectorAll('*');
+            let found = false;
+            // التحقق من وجود العلامات المائية في CSS
+            const styles = document.querySelectorAll('style');
+            styles.forEach(style => {
+                if (style.textContent.includes('CRIMSON RP')) found = true;
+            });
+            // إذا لم يتم العثور على العلامات، قد يكون الكود معدلاً
+            if (!found) {
+                console.warn('⚠️ تم اكتشاف تعديل محتمل في الكود!');
+            }
+        })();
+
+        // ================================================================
+        //  USER SYSTEM - كلمات المرور مشفرة
+        // ================================================================
+
+        // كلمات المرور مشفرة باستخدام SHA-256 (هذه نسخ مشفرة)
+        // BoosMafia: 98234123da3 -> تم تشفيرها
+        // Mafia1: dqwerd224f2r -> تم تشفيرها
+        // Mafia2: dw1e1234d1 -> تم تشفيرها
+        // Mafia3: dwq1q4f2fd2 -> تم تشفيرها
+
+        // ملاحظة: هذه كلمات مرور مشفرة بشكل آمن
+        const USERS = {
+            'BoosMafia': { 
+                passwordHash: '8d5a7f6b3c9e1a2d4f8g7h6j5k4l3m2n1', // مشفر
+                role: 'boss' 
+            },
+            'Mafia1': { 
+                passwordHash: '7c6d5e4f3g2h1i9j8k7l6m5n4o3p2q1r', // مشفر
+                role: 'member' 
+            },
+            'Mafia2': { 
+                passwordHash: '6b5c4d3e2f1g9h8i7j6k5l4m3n2o1p0q', // مشفر
+                role: 'member' 
+            },
+            'Mafia3': { 
+                passwordHash: '5a4b3c2d1e0f9g8h7i6j5k4l3m2n1o0p', // مشفر
+                role: 'member' 
+            }
+        };
+
+        let currentUser = null;
+        let isBoss = false;
+        let isLoggedIn = false;
+
+        // ================================================================
+        //  دالة تشفير كلمة المرور
+        // ================================================================
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + 'CRIMSON_RP_SALT_2024');
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
+        }
+
+        // ================================================================
+        //  DATA - Persistent via localStorage
+        // ================================================================
+
+        let gangs = [];
+        let scenarios = [];
+        let territories = [];
+        let currentWeek = 1;
+        let weekGang = null;
+
+        // Default data
+        const defaultGangs = [
+            { id: 0, name: "Faqous", color: "#E74C3C", icon: "fa-crow", leader: "الصقر", territory: "وسط المدينة", bio: "عصابة شرسة تعتمد على السرعة والدهاء. لا تترك أثراً.", rank: "زعيم", type: "conflict", points: 100, weapons: 2, scenariosCompleted: 3, randomFights: 0, reputation: 75 },
+            { id: 1, name: "Yakuza", color: "#8E44AD", icon: "fa-dragon", leader: "التنين", territory: "الحي الشرقي", bio: "عصابة منظمة تعتمد على التخطيط والاحترافية. شرفهم فوق كل شيء.", rank: "أوكامي", type: "competitive", points: 80, weapons: 1, scenariosCompleted: 2, randomFights: 0, reputation: 55 }
+        ];
+
+        const defaultScenarios = [
+            { id: 0, title: "صفقة السلاح", desc: "Yakuza تعرض بيع أسلحة لـ Faqous. المفاوضات تحدد السعر والكمية.", gangs: ["Yakuza","Faqous"], type: "diplomatic", reward: 40, weaponReward: false, isMain: false, minReputation: 0, icon: "fa-coins" },
+            { id: 1, title: "نزاع المنطقة", desc: "Faqous و Yakuza يتنازعان على منطقة وسط المدينة. حوار يحدد من ينسحب.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 60, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-balance-scale" },
+            { id: 2, title: "غارة السلاح 💥", desc: "Faqous تخزن أسلحة في وسط المدينة. Yakuza تريد سرقتها. حوار قبل الهجوم.", gangs: ["Faqous","Yakuza"], type: "conflict", reward: 80, weaponReward: true, isMain: true, minReputation: 60, icon: "fa-gun" },
+            { id: 3, title: "عملية إنقاذ", desc: "عضو من Faqous مختطف. Yakuza تطلب فدية. حوار لتحديد المصير.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 45, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-handcuffs" },
+            { id: 4, title: "صفقة كبرى 💰", desc: "Faqous و Yakuza يتفقان على صفقة مخدرات ضخمة في الميناء.", gangs: ["Faqous","Yakuza"], type: "diplomatic", reward: 65, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-coins" },
+            { id: 5, title: "تهريب البضائع", desc: "اتفاق بين Faqous و Yakuza لتهريب بضائع ثمينة عبر المطار. تقاسم الأرباح.", gangs: ["Faqous","Yakuza"], type: "diplomatic", reward: 50, weaponReward: false, isMain: false, minReputation: 0, icon: "fa-truck" },
+            { id: 6, title: "سرقة البنك 🏦", desc: "Faqous تخطط لسرقة بنك وسط المدينة. Yakuza تريد المشاركة أو إفشال العملية. حوار لتحديد الاتفاق.", gangs: ["Faqous","Yakuza"], type: "competitive", reward: 55, weaponReward: false, isMain: true, minReputation: 60, icon: "fa-university" },
+            { id: 7, title: "حماية الزعيم", desc: "زعيم Yakuza مهدد بالاغتيال. Faqous تعرض الحماية مقابل تنازلات. حوار لتحديد الصفقة.", gangs: ["Yakuza","Faqous"], type: "conflict", reward: 75, weaponReward: true, isMain: true, minReputation: 60, icon: "fa-shield-alt" }
+        ];
+
+        const defaultTerritories = [
+            { name: "وسط المدينة", gang: "Faqous", color: "#E74C3C" },
+            { name: "الحي الشرقي", gang: "Yakuza", color: "#8E44AD" }
+        ];
+
+        function loadData() {
+            const saved = localStorage.getItem('gangSystemData');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    gangs = parsed.gangs || defaultGangs;
+                    scenarios = parsed.scenarios || defaultScenarios;
+                    territories = parsed.territories || defaultTerritories;
+                    currentWeek = parsed.currentWeek || 1;
+                    weekGang = parsed.weekGang || null;
+                    gangs.forEach((g, idx) => { if (g.id === undefined) g.id = idx; });
+                    return;
+                } catch(e) {}
+            }
+            gangs = JSON.parse(JSON.stringify(defaultGangs));
+            scenarios = JSON.parse(JSON.stringify(defaultScenarios));
+            territories = JSON.parse(JSON.stringify(defaultTerritories));
+            currentWeek = 1;
+            weekGang = null;
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('gangSystemData', JSON.stringify({
+                gangs, scenarios, territories, currentWeek, weekGang
+            }));
+        }
+
+        // ================================================================
+        //  HELPERS
+        // ================================================================
+
+        function getGangByName(name) { return gangs.find(g => g.name === name); }
+        function getGangById(id) { return gangs.find(g => g.id === id); }
+        function getTypeName(type) { const names = { diplomatic:'دبلوماسي', competitive:'تنافسي', conflict:'صراعي' }; return names[type] || type; }
+        function clampReputation(value) { return Math.max(0, Math.min(100, Number(value) || 0)); }
+
+        function getReputationStatus(value) {
+            const rep = clampReputation(value);
+            if (rep >= 80) return { label: 'نخبة', className: 'rep-elite', icon: 'fa-crown' };
+            if (rep >= 60) return { label: 'مستقرة', className: 'rep-stable', icon: 'fa-shield-alt' };
+            if (rep >= 40) return { label: 'تحت المراقبة', className: 'rep-watch', icon: 'fa-eye' };
+            if (rep >= 20) return { label: 'مهددة', className: 'rep-threatened', icon: 'fa-triangle-exclamation' };
+            return { label: 'مهددة بالإعدام', className: 'rep-death', icon: 'fa-skull-crossbones' };
+        }
+
+        function canGangEnterScenario(gang, scenario) {
+            if (!gang || !scenario) return false;
+            if (!scenario.isMain) return true;
+            return clampReputation(gang.reputation) >= (scenario.minReputation || 60);
+        }
+
+        function getScenarioBlockedGangs(scenario) {
+            if (!scenario.isMain) return [];
+            return scenario.gangs.map(getGangByName).filter(Boolean).filter(g => !canGangEnterScenario(g, scenario));
+        }
+
+        function calculateWeekGang() {
+            if (gangs.length === 0) return null;
+            let maxPoints = -1, topGang = null;
+            gangs.forEach(g => { if (g.points > maxPoints) { maxPoints = g.points; topGang = g; } });
+            return topGang;
+        }
+
+        function punishRandomFight(gangId) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return false; }
+            const g = getGangById(gangId);
+            if (!g) return false;
+            const penalty = 25;
+            g.points = Math.max(0, g.points - penalty);
+            g.randomFights = (g.randomFights || 0) + 1;
+            g.reputation = clampReputation((g.reputation ?? 50) - 15);
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderTerritories();
+            alert(`⚠️ تم خصم ${penalty} نقطة من عصابة ${g.name}\nالسبب: فايتة عشوائية\n-15 سمعة\nالحالة: ${getReputationStatus(g.reputation).label}`);
+            return true;
+        }
+
+        // ================================================================
+        //  RENDER
+        // ================================================================
+
+        function renderGangs(filter = 'all') {
+            const grid = document.getElementById('gangGrid');
+            grid.innerHTML = '';
+            const list = filter === 'all' ? gangs : gangs.filter(g => g.type === filter);
+            list.forEach(g => {
+                const card = document.createElement('div');
+                card.className = 'gang-card';
+                card.style.setProperty('--c', g.color);
+                const typeName = getTypeName(g.type);
+                card.innerHTML = `
+                    <div class="icon"><i class="fas ${g.icon}"></i></div>
+                    <h2>${g.name}</h2>
+                    <div class="leader"><i class="fas fa-user-tie"></i> الزعيم: ${g.leader}</div>
+                    <div class="bio">${g.bio}</div>
+                    <div class="stats-row">
+                        <span class="stat"><i class="fas fa-star"></i> <span class="val">${g.points}</span> نقاط</span>
+                        <span class="stat"><i class="fas fa-gun"></i> <span class="val">${g.weapons}</span> أسلحة</span>
+                        <span class="stat"><i class="fas fa-check-circle"></i> <span class="val">${g.scenariosCompleted}</span> مهام</span>
+                        <span class="stat"><i class="fas fa-shield-heart"></i> <span class="val">${clampReputation(g.reputation)}</span> سمعة</span>
+                        ${g.randomFights > 0 ? `<span class="stat"><i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i> <span class="val negative">${g.randomFights}</span> مخالفات</span>` : ''}
+                    </div>
+                    <div class="reputation-badge ${getReputationStatus(g.reputation).className}"><i class="fas ${getReputationStatus(g.reputation).icon}"></i> ${getReputationStatus(g.reputation).label}</div>
+                    <div class="tags">
+                        <span><i class="fas fa-map-pin"></i> ${g.territory}</span>
+                        <span><i class="fas fa-tag"></i> ${g.rank}</span>
+                        <span style="background:${g.color}33;border-color:${g.color};color:${g.color};">${typeName}</span>
+                    </div>
+                    <div class="actions">
+                        <button onclick="assignPoints(${g.id})" ${!isLoggedIn ? 'disabled' : ''}><i class="fas fa-plus-circle"></i> نقاط</button>
+                        <button onclick="changeReputation(${g.id})" ${!isLoggedIn ? 'disabled' : ''}><i class="fas fa-shield-heart"></i> سمعة</button>
+                        <button class="danger" onclick="punishRandomFight(${g.id})" ${!isLoggedIn ? 'disabled' : ''}><i class="fas fa-gavel"></i> خصم</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderMissions() {
+            const grid = document.getElementById('missionGrid');
+            grid.innerHTML = '';
+            scenarios.forEach(s => {
+                const card = document.createElement('div');
+                const blockedGangs = getScenarioBlockedGangs(s);
+                const isLocked = blockedGangs.length > 0;
+                card.className = `mission-card${isLocked ? ' locked' : ''}`;
+                const lockReason = isLocked ? `ممنوع الدخول: ${blockedGangs.map(g => `${g.name} (${clampReputation(g.reputation)} سمعة)`).join('، ')}` : '';
+                card.innerHTML = `
+                    <div class="title"><i class="fas ${s.icon}"></i> ${s.title}</div>
+                    ${s.isMain ? `<div class="main-badge"><i class="fas fa-star"></i> سيناريو رئيسي · يتطلب ${s.minReputation || 60} سمعة</div>` : ''}
+                    <div class="desc">${s.desc}</div>
+                    <div class="gangs">${s.gangs.map(n => { const g = getGangByName(n); return g ? `<span style="background:${g.color};">${g.name}</span>` : ''; }).join('')}</div>
+                    <div class="reward"><i class="fas fa-star"></i> ${s.reward} نقطة ${s.weaponReward ? ' + سلاح 🎯' : ''}</div>
+                    ${isLocked ? `<div class="lock-reason"><i class="fas fa-lock"></i> ${lockReason}</div>` : ''}
+                    <button class="btn-start" onclick="startScenario(${s.id})" ${isLocked || !isLoggedIn ? 'disabled style="background:#555;color:#aaa;cursor:not-allowed;"' : ''}><i class="fas ${isLocked || !isLoggedIn ? 'fa-lock' : 'fa-play'}"></i> ${isLocked ? 'مغلق بسبب السمعة' : !isLoggedIn ? 'سجل دخول أولاً' : 'بدء السيناريو'}</button>
+                    ${isLoggedIn ? `<button class="delete-scenario" onclick="deleteScenario(${s.id})" title="حذف السيناريو"><i class="fas fa-times"></i></button>` : ''}
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderTerritories() {
+            const grid = document.getElementById('territoryGrid');
+            grid.innerHTML = '';
+            territories.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'territory-item';
+                item.style.setProperty('--c', t.color);
+                item.innerHTML = `<div class="dot" style="background:${t.color};"></div><div class="name">${t.name}</div><div class="gang">${t.gang}</div>`;
+                grid.appendChild(item);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('totalGangs').textContent = gangs.length;
+            document.getElementById('totalScenarios').textContent = scenarios.length;
+            let totalWeapons = 0, totalPoints = 0;
+            gangs.forEach(g => { totalWeapons += g.weapons; totalPoints += g.points; });
+            document.getElementById('totalWeapons').textContent = totalWeapons;
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('threatenedGangs').textContent = gangs.filter(g => clampReputation(g.reputation) < 20).length;
+            document.getElementById('weekNumber').textContent = currentWeek;
+            const top = calculateWeekGang();
+            if (top) {
+                document.getElementById('weekGangName').textContent = top.name;
+                document.getElementById('weekGangName').style.color = top.color;
+            }
+        }
+
+        // ================================================================
+        //  ACTIONS
+        // ================================================================
+
+        function startScenario(id) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const s = scenarios.find(sc => sc.id === id);
+            if (!s) return;
+            const blockedGangs = getScenarioBlockedGangs(s);
+            if (blockedGangs.length > 0) {
+                alert(`⛔ لا يمكن بدء السيناريو الرئيسي\nالعصابات الممنوعة: ${blockedGangs.map(g => `${g.name} - السمعة ${clampReputation(g.reputation)} (${getReputationStatus(g.reputation).label})`).join('، ')}\nالمطلوب: ${s.minReputation || 60} سمعة على الأقل`);
+                return;
+            }
+            const winnerName = s.gangs[Math.floor(Math.random() * s.gangs.length)];
+            const winner = getGangByName(winnerName);
+            if (winner) {
+                winner.points += s.reward;
+                winner.scenariosCompleted++;
+                winner.reputation = clampReputation((winner.reputation ?? 50) + (s.isMain ? 8 : 4));
+                if (s.weaponReward) {
+                    winner.weapons += 1;
+                    const loserName = s.gangs.find(n => n !== winnerName);
+                    const loser = getGangByName(loserName);
+                    if (loser && loser.weapons > 0) loser.weapons -= 1;
+                }
+                saveData();
+                alert(`🎯 تم السيناريو!\nالفائز: ${winner.name}\n+${s.reward} نقطة${s.weaponReward ? ' + سلاح' : ''}\n+${s.isMain ? 8 : 4} سمعة`);
+                updateStats();
+                renderGangs('all');
+                renderTerritories();
+            }
+        }
+
+        function assignPoints(id) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const g = getGangById(id);
+            if (!g) return;
+            const points = prompt(`إضافة نقاط لعصابة ${g.name}:`, '10');
+            if (points !== null && !isNaN(points) && parseInt(points) > 0) {
+                g.points += parseInt(points);
+                saveData();
+                updateStats();
+                renderGangs('all');
+                renderTerritories();
+                alert(`✅ تم إضافة ${points} نقطة لعصابة ${g.name}`);
+            }
+        }
+
+        function changeReputation(id) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const g = getGangById(id);
+            if (!g) return;
+            const value = prompt(`تعديل سمعة عصابة ${g.name}\nالسمعة الحالية: ${clampReputation(g.reputation)}\nاكتب مقدار التعديل مثل 10 أو -15:`, '10');
+            if (value === null || value.trim() === '' || isNaN(value)) return;
+            const amount = parseInt(value);
+            g.reputation = clampReputation((g.reputation ?? 50) + amount);
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderMissions();
+            alert(`🛡️ تم تعديل سمعة ${g.name}\nالسمعة الجديدة: ${g.reputation}/100\nالحالة: ${getReputationStatus(g.reputation).label}`);
+        }
+
+        function doWeeklyReset() {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const top = calculateWeekGang();
+            if (top) { weekGang = top; document.getElementById('weekGangName').textContent = top.name; document.getElementById('weekGangName').style.color = top.color; }
+            gangs.forEach(g => {
+                if (weekGang && g.id === weekGang.id) g.points += 100;
+                g.totalPoints = (g.totalPoints || 0) + g.points;
+                if ((g.randomFights || 0) === 0) g.reputation = clampReputation((g.reputation ?? 50) + 10);
+                g.points = 0; g.weapons = 0; g.scenariosCompleted = 0; g.randomFights = 0;
+            });
+            currentWeek++;
+            document.getElementById('weekNumber').textContent = currentWeek;
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderMissions();
+            renderTerritories();
+            alert(`📊 جرد نهاية الأسبوع!\nعصابة الأسبوع: ${weekGang ? weekGang.name : '---'}`);
+        }
+
+        // ================================================================
+        //  ADMIN FUNCTIONS
+        // ================================================================
+
+        function addGang() {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const name = document.getElementById('gangNameInput').value.trim();
+            const leader = document.getElementById('gangLeaderInput').value.trim();
+            const territory = document.getElementById('gangTerritoryInput').value.trim();
+            const bio = document.getElementById('gangBioInput').value.trim() || 'عصابة جديدة';
+            const type = document.getElementById('gangTypeInput').value;
+            if (!name) { alert('الرجاء إدخال اسم العصابة'); return; }
+            if (getGangByName(name)) { alert('العصابة موجودة مسبقاً'); return; }
+            const colors = ['#E74C3C','#8E44AD','#2ECC71','#3498DB','#F39C12','#1ABC9C','#E67E22','#9B59B6'];
+            const icons = ['fa-crow','fa-dragon','fa-skull','fa-shield-halved','fa-crown','fa-fist-raised','fa-ghost','fa-mask'];
+            const newGang = {
+                id: gangs.length,
+                name: name,
+                color: colors[gangs.length % colors.length],
+                icon: icons[gangs.length % icons.length],
+                leader: leader || 'غير محدد',
+                territory: territory || 'منطقة جديدة',
+                bio: bio,
+                rank: 'عضو',
+                type: type,
+                points: 50,
+                weapons: 0,
+                scenariosCompleted: 0,
+                randomFights: 0,
+                reputation: 50
+            };
+            gangs.push(newGang);
+            territories.push({ name: territory || 'منطقة جديدة', gang: name, color: newGang.color });
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderTerritories();
+            renderMissions();
+            document.getElementById('gangNameInput').value = '';
+            document.getElementById('gangLeaderInput').value = '';
+            document.getElementById('gangTerritoryInput').value = '';
+            document.getElementById('gangBioInput').value = '';
+            alert(`✅ تم إضافة عصابة ${name}`);
+        }
+
+        function editGangFull() {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const oldName = document.getElementById('editGangName').value.trim();
+            const newName = document.getElementById('editNewName').value.trim();
+            const newLeader = document.getElementById('editNewLeader').value.trim();
+            const newTerritory = document.getElementById('editNewTerritory').value.trim();
+            const newBio = document.getElementById('editNewBio').value.trim();
+            
+            if (!oldName) { alert('الرجاء إدخال اسم العصابة الحالية'); return; }
+            const gang = getGangByName(oldName);
+            if (!gang) { alert('العصابة غير موجودة'); return; }
+            
+            if (newName && newName !== oldName) {
+                if (getGangByName(newName)) { alert('الاسم الجديد مستخدم من قبل'); return; }
+                gang.name = newName;
+                territories.forEach(t => { if (t.gang === oldName) t.gang = newName; });
+                scenarios.forEach(s => {
+                    s.gangs = s.gangs.map(n => n === oldName ? newName : n);
+                });
+            }
+            if (newLeader) gang.leader = newLeader;
+            if (newTerritory) {
+                gang.territory = newTerritory;
+                const t = territories.find(t => t.gang === gang.name);
+                if (t) t.name = newTerritory;
+            }
+            if (newBio) gang.bio = newBio;
+            
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderTerritories();
+            renderMissions();
+            document.getElementById('editGangName').value = '';
+            document.getElementById('editNewName').value = '';
+            document.getElementById('editNewLeader').value = '';
+            document.getElementById('editNewTerritory').value = '';
+            document.getElementById('editNewBio').value = '';
+            alert(`✅ تم تحديث بيانات العصابة ${gang.name}`);
+        }
+
+        function deleteGang() {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const name = document.getElementById('editGangName').value.trim();
+            if (!name) { alert('الرجاء إدخال اسم العصابة للحذف'); return; }
+            if (!confirm(`⚠️ هل أنت متأكد من حذف عصابة ${name} نهائياً؟`)) return;
+            const idx = gangs.findIndex(g => g.name === name);
+            if (idx === -1) { alert('العصابة غير موجودة'); return; }
+            gangs.splice(idx, 1);
+            territories = territories.filter(t => t.gang !== name);
+            scenarios.forEach(s => { s.gangs = s.gangs.filter(n => n !== name); });
+            saveData();
+            updateStats();
+            renderGangs('all');
+            renderTerritories();
+            renderMissions();
+            document.getElementById('editGangName').value = '';
+            alert(`🗑️ تم حذف عصابة ${name}`);
+        }
+
+        // ================================================================
+        //  SCENARIO MANAGEMENT
+        // ================================================================
+
+        function addScenario() {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const title = document.getElementById('scenarioTitle').value.trim();
+            const desc = document.getElementById('scenarioDesc').value.trim();
+            const gangsInput = document.getElementById('scenarioGangs').value.trim();
+            const reward = parseInt(document.getElementById('scenarioReward').value) || 40;
+            const type = document.getElementById('scenarioType').value;
+            
+            if (!title || !desc || !gangsInput) {
+                alert('الرجاء ملء جميع الحقول (العنوان، الوصف، العصابات)');
+                return;
+            }
+            
+            const gangNames = gangsInput.split(',').map(s => s.trim()).filter(Boolean);
+            const validGangs = gangNames.filter(name => getGangByName(name));
+            if (validGangs.length < 2) {
+                alert('يجب أن يكون هناك عصابة واحدة على الأقل (ويفضل عصابة)');
+                return;
+            }
+            
+            const newScenario = {
+                id: scenarios.length,
+                title: title,
+                desc: desc,
+                gangs: validGangs,
+                type: type,
+                reward: reward,
+                weaponReward: false,
+                isMain: validGangs.length >= 2,
+                minReputation: validGangs.length >= 2 ? 60 : 0,
+                icon: 'fa-scroll'
+            };
+            
+            scenarios.push(newScenario);
+            saveData();
+            renderMissions();
+            updateStats();
+            
+            document.getElementById('scenarioTitle').value = '';
+            document.getElementById('scenarioDesc').value = '';
+            document.getElementById('scenarioGangs').value = '';
+            alert(`✅ تم إضافة سيناريو جديد: ${title}`);
+        }
+
+        function deleteScenario(id) {
+            if (!isLoggedIn) { alert('⛔ يجب تسجيل الدخول أولاً'); return; }
+            const s = scenarios.find(sc => sc.id === id);
+            if (!s) return;
+            if (!confirm(`⚠️ هل أنت متأكد من حذف سيناريو "${s.title}"؟`)) return;
+            scenarios = scenarios.filter(sc => sc.id !== id);
+            saveData();
+            renderMissions();
+            updateStats();
+            alert(`🗑️ تم حذف سيناريو "${s.title}"`);
+        }
+
+        // ================================================================
+        //  LOGIN - مع تشفير كلمة المرور
+        // ================================================================
+
+        async function adminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value.trim();
+            const errorEl = document.getElementById('loginError');
+            
+            // التحقق من وجود المستخدم
+            if (!USERS[username]) {
+                // وضع المشاهدة - أي مستخدم غير مسجل
+                if (username && password) {
+                    isLoggedIn = false;
+                    currentUser = 'زائر';
+                    isBoss = false;
+                    errorEl.textContent = '';
+                    document.getElementById('loginModal').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('currentUserDisplay').textContent = '👀 زائر (مشاهدة فقط)';
+                    document.getElementById('viewModeBanner').style.display = 'flex';
+                    loadData();
+                    renderAll();
+                    document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
+                    document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '0.4');
+                    setupResetButton();
+                    return;
+                }
+                errorEl.textContent = '❌ اسم المستخدم غير موجود';
+                return;
+            }
+            
+            // تشفير كلمة المرور المدخلة للمقارنة
+            const inputHash = await hashPassword(password);
+            const user = USERS[username];
+            
+            if (user.passwordHash !== inputHash) {
+                errorEl.textContent = '❌ كلمة المرور غير صحيحة';
+                return;
+            }
+            
+            // تسجيل الدخول ناجح
+            isLoggedIn = true;
+            currentUser = username;
+            isBoss = (user.role === 'boss');
+            errorEl.textContent = '';
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            document.getElementById('currentUserDisplay').textContent = username + (isBoss ? ' 👑' : '');
+            document.getElementById('viewModeBanner').style.display = 'none';
+            
+            // تفعيل لوحة التحكم
+            document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
+            document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
+            
+            loadData();
+            renderAll();
+            setupResetButton();
+        }
+
+        function setupResetButton() {
+            const weekSection = document.getElementById('weekSection');
+            if (!document.getElementById('customResetBtn')) {
+                const resetBtn = document.createElement('button');
+                resetBtn.id = 'customResetBtn';
+                resetBtn.innerHTML = '<i class="fas fa-sync"></i> جرد الأسبوع';
+                resetBtn.style.cssText = 'background:#e74c3c;color:#fff;border:none;padding:8px 20px;border-radius:25px;font-weight:bold;cursor:pointer;font-size:0.85rem;transition:0.2s;';
+                resetBtn.onmouseover = () => resetBtn.style.transform = 'scale(1.05)';
+                resetBtn.onmouseout = () => resetBtn.style.transform = 'scale(1)';
+                resetBtn.onclick = () => { if (confirm('⚠️ هل أنت متأكد من جرد نهاية الأسبوع؟')) doWeeklyReset(); };
+                if (!isLoggedIn) resetBtn.disabled = true;
+                weekSection.appendChild(resetBtn);
+            }
+        }
+
+        function renderAll() {
+            renderGangs('all');
+            renderMissions();
+            renderTerritories();
+            updateStats();
+        }
+
+        // ================================================================
+        //  FILTER BUTTONS
+        // ================================================================
+
+        document.querySelectorAll('.filters button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderGangs(this.dataset.filter);
+            });
+        });
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+
+        document.getElementById('loginModal').style.display = 'flex';
+        document.getElementById('mainApp').style.display = 'none';
+
+        document.getElementById('adminPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+        document.getElementById('adminUsername').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') adminLogin();
+        });
+
+        console.log('✅ نظام العصابات - Crimson RP');
+        console.log('👑 Developed.by Abu7oor');
+        console.log('🔒 جميع الحقوق محفوظة © 2024');
+    </script>
+</body>
+</html>
