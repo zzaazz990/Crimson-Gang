@@ -61,6 +61,7 @@
             padding-top: 12px;
         }
         .header .copyright span { color: #8e44ad; font-weight: bold; }
+        .header .logout-area { margin-top: 10px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
 
         .top-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px; background: #111; padding: 18px 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #222; }
         .top-bar .item { text-align: center; }
@@ -197,8 +198,18 @@
         .login-modal .box .user-info .viewer { color: #3498db; }
         .login-modal .box .copyright-footer { margin-top: 12px; color: #444; font-size: 0.55rem; border-top: 1px solid #1a1a1a; padding-top: 10px; }
         .login-modal .box .copyright-footer span { color: #8e44ad; }
-        .login-modal .box .show-pass-btn { background: #333; color: #aaa; border: none; padding: 4px 12px; border-radius: 5px; cursor: pointer; font-size: 0.6rem; margin-top: 5px; }
-        .login-modal .box .show-pass-btn:hover { background: #444; color: #fff; }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: 0.2s;
+        }
+        .logout-btn:hover { background: #c0392b; transform: scale(1.05); }
 
         @media (max-width: 600px) {
             .header h1 { font-size: 1.8rem; }
@@ -232,10 +243,6 @@
             
             <div class="error" id="loginError"></div>
             
-            <button class="show-pass-btn" onclick="showPasswords()">
-                <i class="fas fa-key"></i> عرض كلمات المرور
-            </button>
-            
             <div class="user-info">
                 <div><span class="boss">👑 المسؤول:</span> BoosMafia</div>
                 <div><span class="member">🔹 الأعضاء:</span> Mafia1, Mafia2, Mafia3</div>
@@ -256,6 +263,9 @@
             <h1><i class="fas fa-crown"></i> نظام العصابات</h1>
             <p><i class="fas fa-shield-alt"></i> حوارات · سيناريوهات · نقاط · <span class="highlight">ممنوع الفايتات العشوائية</span></p>
             <p style="color:#888;font-size:0.8rem;margin-top:5px;">مرحباً <span id="currentUserDisplay" style="color:#f1c40f;font-weight:bold;">---</span></p>
+            <div class="logout-area">
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</button>
+            </div>
             <div class="copyright">
                 <i class="fas fa-copyright"></i> 2024 Crimson RP | <span>Developed.by Abu7oor</span> | جميع الحقوق محفوظة
             </div>
@@ -423,7 +433,6 @@
         console.log('%c  Developed.by Abu7oor', 'color: #2ecc71; font-size: 14px;');
         console.log('%c═══════════════════════════════════════════════', 'color: #8e44ad; font-size: 14px;');
         console.log('%c⚠️ تحذير: هذا الكود محمي بحقوق النشر', 'color: #e74c3c; font-size: 16px; font-weight: bold;');
-        console.log('%cيمنع نسخ أو توزيع أو إعادة نشر هذا الكود دون إذن', 'color: #f39c12; font-size: 14px;');
 
         // ================================================================
         //  USER SYSTEM - بيانات الدخول الصحيحة
@@ -453,25 +462,71 @@
         let isLoggedIn = false;
 
         // ================================================================
-        //  دالة عرض كلمات المرور
+        //  حفظ واستعادة الجلسة (Session) - "تذكرني"
         // ================================================================
-        function showPasswords() {
-            alert(
-                '═══════════════════════════════\n' +
-                '👑  المسؤول (صلاحيات كاملة)\n' +
-                '   BoosMafia: 98234123da3\n' +
-                '═══════════════════════════════\n' +
-                '🔹  الأعضاء (صلاحيات كاملة)\n' +
-                '   Mafia1: dqwerd224f2r\n' +
-                '   Mafia2: dw1e1234d1\n' +
-                '   Mafia3: dwq1q4f2fd2\n' +
-                '═══════════════════════════════\n' +
-                '👀  وضع المشاهدة (مشاهدة فقط)\n' +
-                '   أي اسم مستخدم + أي كلمة مرور\n' +
-                '═══════════════════════════════\n' +
-                '📌 ملاحظة: كلمات المرور حساسة للأحرف\n' +
-                'Crimson RP | Developed.by Abu7oor'
-            );
+
+        function saveSession(username, isBoss, role) {
+            const sessionData = {
+                username: username,
+                isBoss: isBoss,
+                role: role,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('gangSession', JSON.stringify(sessionData));
+        }
+
+        function restoreSession() {
+            const sessionData = localStorage.getItem('gangSession');
+            if (!sessionData) return false;
+            
+            try {
+                const session = JSON.parse(sessionData);
+                // صلاحية الجلسة: 24 ساعة
+                const hours24 = 24 * 60 * 60 * 1000;
+                if (Date.now() - session.timestamp > hours24) {
+                    localStorage.removeItem('gangSession');
+                    return false;
+                }
+                
+                // استعادة الجلسة
+                isLoggedIn = true;
+                currentUser = session.username;
+                isBoss = session.isBoss;
+                
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('currentUserDisplay').textContent = session.username + (session.isBoss ? ' 👑' : '');
+                
+                if (session.username === 'زائر') {
+                    document.getElementById('viewModeBanner').style.display = 'flex';
+                    document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = true);
+                    document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '0.4');
+                } else {
+                    document.getElementById('viewModeBanner').style.display = 'none';
+                    document.querySelectorAll('#adminPanel button, #adminPanel input, #adminPanel select').forEach(el => el.disabled = false);
+                    document.querySelectorAll('#adminPanel button').forEach(b => b.style.opacity = '1');
+                }
+                
+                loadData();
+                renderAll();
+                setupResetButton();
+                console.log('🔄 تم استعادة الجلسة للمستخدم:', session.username);
+                return true;
+            } catch(e) {
+                localStorage.removeItem('gangSession');
+                return false;
+            }
+        }
+
+        // ================================================================
+        //  تسجيل الخروج
+        // ================================================================
+        function logout() {
+            localStorage.removeItem('gangSession');
+            isLoggedIn = false;
+            currentUser = null;
+            isBoss = false;
+            location.reload();
         }
 
         // ================================================================
@@ -1032,7 +1087,7 @@
         }
 
         // ================================================================
-        //  LOGIN - الدالة الرئيسية
+        //  LOGIN - مع حفظ الجلسة
         // ================================================================
 
         function adminLogin() {
@@ -1050,6 +1105,10 @@
                     currentUser = username;
                     isBoss = (USERS[username].role === 'boss');
                     errorEl.textContent = '';
+                    
+                    // 💾 حفظ الجلسة
+                    saveSession(username, isBoss, USERS[username].role);
+                    
                     document.getElementById('loginModal').style.display = 'none';
                     document.getElementById('mainApp').style.display = 'block';
                     document.getElementById('currentUserDisplay').textContent = username + (isBoss ? ' 👑' : '');
@@ -1077,6 +1136,10 @@
                 currentUser = 'زائر';
                 isBoss = false;
                 errorEl.textContent = '';
+                
+                // 💾 حفظ الجلسة كزائر
+                saveSession('زائر', false, 'viewer');
+                
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('currentUserDisplay').textContent = '👀 زائر (مشاهدة فقط)';
@@ -1128,12 +1191,19 @@
         });
 
         // ================================================================
-        //  INIT
+        //  INIT - مع استعادة الجلسة
         // ================================================================
 
-        document.getElementById('loginModal').style.display = 'flex';
-        document.getElementById('mainApp').style.display = 'none';
+        // أولاً: محاولة استعادة الجلسة
+        const sessionRestored = restoreSession();
 
+        if (!sessionRestored) {
+            // إذا ما فيه جلسة، اعرض شاشة تسجيل الدخول
+            document.getElementById('loginModal').style.display = 'flex';
+            document.getElementById('mainApp').style.display = 'none';
+        }
+
+        // أحداث Enter
         document.getElementById('adminPassword').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') adminLogin();
         });
@@ -1145,6 +1215,7 @@
         console.log('👑 Developed.by Abu7oor');
         console.log('🔒 جميع الحقوق محفوظة © 2024');
         console.log('📨 Discord Webhook: ' + (DISCORD_WEBHOOK_URL.includes('رقمك') ? '❌ لم يتم إعداد Webhook' : '✅ تم الإعداد'));
+        console.log('💾 الجلسة: ' + (sessionRestored ? '✅ تم استعادتها' : '❌ لا توجد جلسة سابقة'));
     </script>
 </body>
 </html>
